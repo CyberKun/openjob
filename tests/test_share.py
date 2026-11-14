@@ -363,6 +363,8 @@ class PageTests(unittest.TestCase):
             for page in (job_html, talent_html):
                 self.assertRegex(page, r'<p[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"[^>]*data-copy-status[^>]*></p>')
 
+            self.assertNotIn('data-i18n="sample"', job_html)
+            self.assertNotIn(">Sample<", job_html)
             self.assertEqual(_meta(talent_html, "og:title"), talent["share_text"])
             self.assertNotIn("example.com", talent_html.split("</head>", 1)[0])
         finally:

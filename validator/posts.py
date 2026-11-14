@@ -199,8 +199,8 @@ def is_unpublished(rel: str) -> bool:
 def iter_post_files(root: Path) -> list[tuple[str, Path]]:
     """Files under ``jobs/``, ``talents/``, and ``companies/``.
 
-    ``tests/`` and ``templates/`` are not walked. Sample posts live under
-    ``tests/fixtures/samples/`` and must not enter the site index.
+    ``tests/`` and ``templates/`` are not walked. Checker fixtures live under
+    ``tests/fixtures/`` and must not enter the site index.
     """
     found: list[tuple[str, Path]] = []
     for folder in POST_ROOTS:
@@ -266,6 +266,7 @@ def validate_post(
         scan_text, hiring_issues = _prepare_hiring_email(text, meta, root=root, rel=rel)
     issues.extend(_privacy_issues(scan_text, rel))
     issues.extend(hiring_issues)
+    issues.extend(_example_issues(meta, rel=rel))
     schema_issues = _schema_issues(meta, rel)
     issues.extend(schema_issues)
     if not schema_issues:
@@ -281,15 +282,6 @@ def validate_post(
                 meta,
                 rel=rel,
                 author=author,
-                base_meta=base_meta,
-            )
-        )
-        issues.extend(
-            _example_issues(
-                meta,
-                rel=rel,
-                author=author,
-                maintainers=maintainers or set(),
                 base_meta=base_meta,
             )
         )
@@ -329,8 +321,6 @@ def load_post(path: Path) -> tuple[dict, str]:
 
 def effective_expiry(meta: dict) -> date | None:
     """Last day the post stays on the board, or None when it does not expire."""
-    if meta.get("example") is True:
-        return None
     kind = meta.get("kind")
     if kind == "company":
         return None
@@ -371,8 +361,8 @@ def maintainers_from(root: Path) -> set[str]:
             for token in stripped.split()[1:]:
                 if token.startswith("@") and len(token) > 1:
                     owners.add(token[1:].lower())
-    # @zwobill can still perform maintainer-only actions (such as example posts)
-    # when CODEOWNERS names the team, and when the file is missing.
+    # @zwobill stays a maintainer when CODEOWNERS names the team, and when the
+    # file is missing.
     owners.add("zwobill")
     return owners
 
@@ -684,34 +674,41 @@ def _schema_issues(meta: dict, rel: str) -> list[Issue]:
     kind = meta.get("kind")
     schemas = _validators()
     if kind not in schemas:
+        from validator.schema_report import schema_public_url
+
         allowed = ", ".join(sorted(schemas))
+        url = schema_public_url("job")
         return [
             Issue(
                 "schema",
                 rel,
-                f"`kind` must be one of: {allowed}.",
-                FIX["schema"],
+                f"{rel}: field `kind` is missing or not one of: {allowed}.",
+                f"Set `kind` to one of: {allowed}. See {url}.",
             )
         ]
+    from validator.schema_report import schema_failure
+
     issues: list[Issue] = []
     for error in sorted(schemas[kind].iter_errors(meta), key=_error_key):
-        path_parts = [str(part) for part in error.absolute_path]
-        loc = "/".join(path_parts) or "front matter"
-        fix = FIX["schema"]
-        if path_parts and path_parts[0] in {"apply", "apply_email"}:
+        message, fix = schema_failure(rel, kind, error)
+        if error.absolute_path and str(error.absolute_path[0]) in {"apply", "apply_email"}:
             fix = (
                 "`apply` is required. Use an https ATS, careers, or job link, or one "
                 "`mailto:` on the company website's domain. `apply_email` is that "
                 "`mailto:` only when `apply` is https. Do not set both fields to mailto. "
                 + APPLY_DOC
+                + " "
+                + fix
             )
         elif error.validator == "additionalProperties":
             fix = (
                 "Remove fields the schema does not define. There is no phone field. "
                 "A hiring address belongs in `apply` or `apply_email` on a job, not in a field named `email`. "
                 + APPLY_DOC
+                + " "
+                + fix
             )
-        issues.append(Issue("schema", rel, f"{loc}: {error.message}", fix))
+        issues.append(Issue("schema", rel, message, fix))
     return issues
 
 
@@ -933,7 +930,7 @@ def _date_issues(
             issues.append(Issue("dates", rel, "`renewed` is too far in the future.", FIX["dates"]))
     window_start = today - timedelta(days=NEW_POST_MAX_AGE_DAYS)
     future_limit = today + timedelta(days=FUTURE_SKEW_DAYS)
-    fresh_required = new_file and meta.get("example") is not True
+    fresh_required = new_file
     renewed_changed = meta.get("renewed") and (
         base_meta is None or base_meta.get("renewed") != meta.get("renewed")
     )
@@ -956,9 +953,7 @@ def _date_issues(
             )
         )
     if fresh_required:
-        probe = dict(meta)
-        probe["example"] = False
-        expires_on = effective_expiry(probe)
+        expires_on = effective_expiry(meta)
         if expires_on is not None and expires_on < today:
             issues.append(
                 Issue(
@@ -1046,25 +1041,14 @@ def _ownership_issues(
     return issues
 
 
-def _example_issues(
-    meta: dict,
-    *,
-    rel: str,
-    author: str,
-    maintainers: set[str],
-    base_meta: dict | None,
-) -> list[Issue]:
+def _example_issues(meta: dict, *, rel: str) -> list[Issue]:
     if meta.get("example") is not True:
-        return []
-    if author.lower() in maintainers:
-        return []
-    if base_meta is not None and base_meta.get("example") is True and owner_of(base_meta) == author.lower():
         return []
     return [
         Issue(
             "example",
             rel,
-            "`example: true` is only for sample posts committed by a maintainer.",
+            "Sample posts are not published. Remove `example`. The board lists real posts only.",
             FIX["example"],
         )
     ]
