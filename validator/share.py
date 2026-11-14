@@ -386,6 +386,7 @@ def render_post_page(post: Mapping[str, object], body: str) -> str:
           <button type="button" data-copy data-i18n="copy" data-done="Copied" data-i18n-attrs="data-done:copied">Copy link</button>
           <button type="button" data-wechat data-i18n="wechat" aria-expanded="false">WeChat</button>
         </div>
+        <p class="copy-status" role="status" aria-live="polite" aria-atomic="true" data-copy-status></p>
         <label class="permalink-label">
           <span class="sub" data-i18n="permalink">Permalink</span>
           <input class="permalink" readonly value="{e(url, quote=True)}">
