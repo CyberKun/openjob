@@ -32,7 +32,7 @@ else, including an empty list, stays English.
       origin: "Source",
       originOpt: { all: "All sources", owner: "Posted on OpenJob", indexed: "Indexed" },
       indexedBadge: function (hours) { return "Indexed · checked " + hours + "h ago"; },
-      applyOnSite: function (name) { return "Apply on " + name + " site"; },
+      department: "Department",
       any: "Any",
       remoteOpt: { remote: "Remote", onsite: "On-site", hybrid: "Hybrid", unspecified: "Not set" },
       employment: {
@@ -175,7 +175,7 @@ else, including an empty list, stays English.
       origin: "来源",
       originOpt: { all: "全部来源", owner: "发布在 OpenJob", indexed: "索引" },
       indexedBadge: function (hours) { return "索引 · " + hours + " 小时前检查"; },
-      applyOnSite: function (name) { return "在 " + name + " 的网站申请"; },
+      department: "部门",
       any: "不限",
       remoteOpt: { remote: "远程", onsite: "到岗", hybrid: "混合", unspecified: "未标明" },
       employment: {
