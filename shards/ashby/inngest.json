@@ -1,0 +1,49 @@
+{
+  "status": "ok",
+  "checked_at": "2026-11-15T07:11:53Z",
+  "failed_at": null,
+  "etag": "W/\"job-board:6ea3436cde4f678ac5ef6ff926369482eebd88bcd0c1c2f5ca4be2505259a7c3\"",
+  "jobs": [
+    {
+      "id": "33b9f4ae-3be8-4a00-8548-8a00c276fd88",
+      "title": "Developer Success Engineer",
+      "company": "Inngest",
+      "location": "San Francisco",
+      "remote": "hybrid",
+      "department": "Developer Success",
+      "employment_type": "FULL_TIME",
+      "salary_text": "$130K - $170K",
+      "salary_source": "ashby",
+      "posted": "2026-10-29",
+      "updated": "",
+      "deadline": "",
+      "source_url": "https://jobs.ashbyhq.com/inngest/33b9f4ae-3be8-4a00-8548-8a00c276fd88",
+      "apply_url": "https://jobs.ashbyhq.com/inngest/33b9f4ae-3be8-4a00-8548-8a00c276fd88/application",
+      "first_seen": "2026-11-15T07:11:53Z",
+      "last_checked": "2026-11-15T07:11:53Z"
+    },
+    {
+      "id": "ae72d036-b98b-4abb-8454-a687870cf0ca",
+      "title": "Distributed Systems Engineer - Platform",
+      "company": "Inngest",
+      "location": "US/Remote",
+      "remote": "remote",
+      "department": "Engineering",
+      "employment_type": "FULL_TIME",
+      "salary_text": "",
+      "salary_source": "",
+      "posted": "2025-04-15",
+      "updated": "",
+      "deadline": "",
+      "source_url": "https://jobs.ashbyhq.com/inngest/ae72d036-b98b-4abb-8454-a687870cf0ca",
+      "apply_url": "https://jobs.ashbyhq.com/inngest/ae72d036-b98b-4abb-8454-a687870cf0ca/application",
+      "first_seen": "2026-11-15T07:11:53Z",
+      "last_checked": "2026-11-15T07:11:53Z"
+    }
+  ],
+  "ats": "ashby",
+  "board": "inngest",
+  "slug": "inngest",
+  "name": "Inngest",
+  "website": "https://www.inngest.com"
+}

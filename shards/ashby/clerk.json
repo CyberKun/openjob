@@ -1,0 +1,49 @@
+{
+  "status": "ok",
+  "checked_at": "2026-11-15T07:11:53Z",
+  "failed_at": null,
+  "etag": "W/\"job-board:42c5438e4a8116082c890aefe7e07ccc1d3c5d88cc40447e93de67c96ef8f0b6\"",
+  "jobs": [
+    {
+      "id": "22d74851-1657-4dc6-9a44-b81900131486",
+      "title": "Brand Designer",
+      "company": "Clerk",
+      "location": "Remote or In-Office in San Francisco",
+      "remote": "remote",
+      "department": "Design",
+      "employment_type": "FULL_TIME",
+      "salary_text": "",
+      "salary_source": "",
+      "posted": "2026-09-23",
+      "updated": "",
+      "deadline": "",
+      "source_url": "https://jobs.ashbyhq.com/Clerk/22d74851-1657-4dc6-9a44-b81900131486",
+      "apply_url": "https://jobs.ashbyhq.com/Clerk/22d74851-1657-4dc6-9a44-b81900131486/application",
+      "first_seen": "2026-11-15T07:11:53Z",
+      "last_checked": "2026-11-15T07:11:53Z"
+    },
+    {
+      "id": "7635ac5c-bb36-48aa-a572-e467eb9ab429",
+      "title": "Product Designer",
+      "company": "Clerk",
+      "location": "Remote",
+      "remote": "remote",
+      "department": "Design",
+      "employment_type": "FULL_TIME",
+      "salary_text": "",
+      "salary_source": "",
+      "posted": "2026-10-29",
+      "updated": "",
+      "deadline": "",
+      "source_url": "https://jobs.ashbyhq.com/Clerk/7635ac5c-bb36-48aa-a572-e467eb9ab429",
+      "apply_url": "https://jobs.ashbyhq.com/Clerk/7635ac5c-bb36-48aa-a572-e467eb9ab429/application",
+      "first_seen": "2026-11-15T07:11:53Z",
+      "last_checked": "2026-11-15T07:11:53Z"
+    }
+  ],
+  "ats": "ashby",
+  "board": "clerk",
+  "slug": "clerk",
+  "name": "Clerk",
+  "website": "https://clerk.com"
+}
