@@ -13,6 +13,7 @@ It becomes the host file when the board is served from its own domain.
 from __future__ import annotations
 
 import base64
+import html
 import json
 import shutil
 from datetime import datetime, timezone
@@ -83,23 +84,26 @@ def write_discovery(
     archive_urls = _write_archives(site_dir, grouped, lastmod, archive_page_size)
     _write_homepage(site_dir, grouped, homepage_per_kind, archive_page_size)
     jobs = grouped["job"]
+    # Feeds carry posts that have a page on this site. Indexed jobs stay in index.json.
+    owned = [post for post in posts if post.get("permalink")]
+    owned_jobs = [post for post in jobs if post.get("permalink")]
     (site_dir / "feed.xml").write_text(
-        _rss(posts[:feed_limit], "OpenJob", f"{_origin()}/feed.xml"), encoding="utf-8"
+        _rss(owned[:feed_limit], "OpenJob", f"{_origin()}/feed.xml"), encoding="utf-8"
     )
     (site_dir / "jobs.xml").write_text(
-        _rss(jobs[:feed_limit], "OpenJob jobs", f"{_origin()}/jobs.xml"), encoding="utf-8"
+        _rss(owned_jobs[:feed_limit], "OpenJob jobs", f"{_origin()}/jobs.xml"), encoding="utf-8"
     )
     (site_dir / "atom.xml").write_text(
-        _atom(posts[:feed_limit], "OpenJob", f"{_origin()}/atom.xml"), encoding="utf-8"
+        _atom(owned[:feed_limit], "OpenJob", f"{_origin()}/atom.xml"), encoding="utf-8"
     )
     (site_dir / "jobs.atom").write_text(
-        _atom(jobs[:feed_limit], "OpenJob jobs", f"{_origin()}/jobs.atom"), encoding="utf-8"
+        _atom(owned_jobs[:feed_limit], "OpenJob jobs", f"{_origin()}/jobs.atom"), encoding="utf-8"
     )
     (site_dir / "feed.json").write_text(
-        _json_feed(posts[:feed_limit], "OpenJob", f"{_origin()}/feed.json"), encoding="utf-8"
+        _json_feed(owned[:feed_limit], "OpenJob", f"{_origin()}/feed.json"), encoding="utf-8"
     )
     (site_dir / "jobs.json").write_text(
-        _json_feed(jobs[:feed_limit], "OpenJob jobs", f"{_origin()}/jobs.json"), encoding="utf-8"
+        _json_feed(owned_jobs[:feed_limit], "OpenJob jobs", f"{_origin()}/jobs.json"), encoding="utf-8"
     )
     talents = grouped["talent"]
     (site_dir / "talents.xml").write_text(
@@ -112,7 +116,7 @@ def write_discovery(
         _json_feed(talents[:feed_limit], "OpenJob talent", f"{_origin()}/talents.json"), encoding="utf-8"
     )
     (site_dir / "llms.txt").write_text(_llms(grouped), encoding="utf-8")
-    (site_dir / "llms-full.txt").write_text(_llms_full(posts, llms_full_limit), encoding="utf-8")
+    (site_dir / "llms-full.txt").write_text(_llms_full(owned, llms_full_limit), encoding="utf-8")
     _write_schemas(site_dir)
     (site_dir / "robots.txt").write_text(_robots(), encoding="utf-8")
     _write_sitemaps(
@@ -122,6 +126,7 @@ def write_discovery(
         url_limit=sitemap_url_limit,
         byte_limit=sitemap_byte_limit,
     )
+    _write_hubs(site_dir, posts)
     _write_about(site_dir)
     _write_not_found(site_dir)
     _write_cname(site_dir)
@@ -188,7 +193,11 @@ def _homepage_list(grouped: dict[str, list[dict]], per_kind: int, page_size: int
         posts = grouped[key]
         if not posts:
             continue
-        items = "\n".join(_post_item(post, "p/" + str(post["path"]).removesuffix(".md") + "/") for post in posts[:per_kind])
+        items = "\n".join(
+            item
+            for post in posts[:per_kind]
+            if (item := _post_item(post, "p/" + str(post["path"]).removesuffix(".md") + "/"))
+        )
         archive = f"{slug}/page/1/"
         sections.append(
             "\n".join(
@@ -220,6 +229,10 @@ def _homepage_list(grouped: dict[str, list[dict]], per_kind: int, page_size: int
 
 
 def _post_item(post: dict, href: str) -> str:
+    if post.get("origin") == "indexed":
+        href = str(post.get("source_url") or "")
+    if not href or href == "None":
+        return ""
     return f'<li><a href="{escape(href)}">{escape(_label(post))}</a></li>'
 
 
@@ -295,7 +308,7 @@ def _archive_page(key: str, slug: str, title: str, number: int, pages: int, post
     head.append("</nav>")
     if posts:
         head.append("<ul>")
-        head.extend(_post_item(post, str(post["permalink"])) for post in posts)
+        head.extend(item for post in posts if (item := _post_item(post, str(post.get("permalink") or ""))))
         head.append("</ul>")
     else:
         empty = {
@@ -323,12 +336,87 @@ def _page_count(count: int, page_size: int) -> int:
     return (count + page_size - 1) // page_size
 
 
+def _write_hubs(site_dir: Path, posts: list[dict]) -> None:
+    """Indexable company hubs for boards that have no company page. No JobPosting markup."""
+    groups: dict[str, list[dict]] = {}
+    for post in posts:
+        if post.get("origin") != "indexed" or post.get("company_permalink"):
+            continue
+        slug = str(post.get("owner") or "")
+        if slug:
+            groups.setdefault(slug, []).append(post)
+    dest_root = site_dir / "c"
+    if dest_root.is_symlink():
+        raise ValueError("Refusing to replace a symlinked company hub directory.")
+    if dest_root.exists():
+        shutil.rmtree(dest_root)
+    for slug, jobs in groups.items():
+        dest = dest_root / slug / "index.html"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(_hub_html(slug, jobs), encoding="utf-8")
+
+
+def _hub_html(slug: str, jobs: list[dict]) -> str:
+    name = str(jobs[0].get("org") or slug)
+    rows = []
+    for job in jobs:
+        title = html.escape(str(job.get("title") or ""))
+        url = html.escape(str(job.get("source_url") or job.get("apply") or ""), quote=True)
+        place = html.escape(str(job.get("location") or ""))
+        checked = html.escape(str(job.get("last_checked") or ""))
+        rows.append(
+            f'<li><a href="{url}" rel="noopener noreferrer">{title}</a>'
+            f" · {place} · checked {checked}</li>"
+        )
+    body = "\n".join(rows)
+    home = html.escape(_home(), quote=True)
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Jobs at {html.escape(name)}</title>
+  <meta name="description" content="Jobs at {html.escape(name)}, linked from the employer's own board and checked daily.">
+  <link rel="canonical" href="{html.escape(_origin(), quote=True)}/c/{html.escape(slug, quote=True)}/">
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body class="entry">
+  <div class="wrap">
+    <p><a href="{home}">OpenJob</a></p>
+    <h1>Jobs at {html.escape(name)}</h1>
+    <p>These roles are indexed from {html.escape(name)}'s own board. OpenJob did not write them. Checked daily.</p>
+    <ul>
+{body}
+    </ul>
+    <p><a href="../../about/#claim">Claim this page</a></p>
+  </div>
+</body>
+</html>
+"""
+
+
+def _hub_locs(posts: list[dict], lastmod: str):
+    seen: set[str] = set()
+    for post in posts:
+        if post.get("origin") != "indexed" or post.get("company_permalink"):
+            continue
+        slug = str(post.get("owner") or "")
+        if not slug or slug in seen:
+            continue
+        seen.add(slug)
+        posted = str(post.get("posted") or lastmod)
+        yield f"{_origin()}/c/{slug}/", posted[:10]
+
+
 def _sitemap_locs(lastmod: str, archive_urls: list[tuple[str, str]], posts: list[dict]):
     yield _home(), lastmod
     yield from archive_urls
     for post in posts:
+        page = post.get("permalink")
+        if not page:
+            continue
         posted = str(post.get("posted") or lastmod)
-        yield str(post["permalink"]), posted[:10]
+        yield str(page), posted[:10]
+    yield from _hub_locs(posts, lastmod)
 
 
 def _write_sitemaps(site_dir: Path, locs, lastmod: str, *, url_limit: int, byte_limit: int) -> None:
