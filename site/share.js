@@ -41,6 +41,12 @@ function copyPermalink(root, button) {
 function copyText(text, button, fallback) {
   const done = () => {
     const label = button.getAttribute("data-done") || "Copied";
+    const root = button.closest("[data-permalink]");
+    const status = root && root.querySelector("[data-copy-status]");
+    if (status) {
+      status.textContent = "";
+      window.setTimeout(() => { status.textContent = label; }, 0);
+    }
     const previous = button.textContent;
     button.textContent = label;
     window.setTimeout(() => {
