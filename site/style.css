@@ -281,7 +281,17 @@ h2 a { text-decoration-thickness: 1px; text-underline-offset: 3px; }
   cursor: pointer;
 }
 
-.links { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; }
+.links { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 8px; }
+
+.links .apply-link {
+  padding: 5px 10px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.indexed-facts { margin-top: 5px; }
 
 footer { margin-top: 28px; color: var(--muted); }
 

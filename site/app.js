@@ -316,7 +316,10 @@ function card(post, target) {
     sub.textContent = bits.join(" · ");
     article.appendChild(sub);
   }
-  if (post.excerpt) {
+  if (post.origin === "indexed") {
+    const facts = indexedFacts(post, copy);
+    if (facts) article.appendChild(facts);
+  } else if (post.excerpt) {
     const excerpt = document.createElement("p");
     excerpt.className = "excerpt";
     excerpt.textContent = post.excerpt;
@@ -349,8 +352,11 @@ function card(post, target) {
     talentLinks(post, copy).forEach((node) => links.appendChild(node));
   }
   if (post.origin === "indexed") {
-    const apply = safeLink(post.apply || post.source_url, copy.applyOnSite(post.org || post.headline || "the company"));
-    if (apply) links.appendChild(apply);
+    const apply = safeLink(post.apply || post.source_url, copy.apply);
+    if (apply) {
+      apply.classList.add("apply-link");
+      links.appendChild(apply);
+    }
   }
   const source = post.origin === "indexed" ? null : safeLink(post.source_url, copy.source);
   if (source) links.appendChild(source);
@@ -438,8 +444,28 @@ function badge(text, extra) {
   return node;
 }
 
+function indexedFacts(post, copy) {
+  const facts = [];
+  if (post.department) facts.push(`${copy.department}: ${post.department}`);
+  const employment = Array.isArray(post.employment_type)
+    ? post.employment_type
+    : post.employment_type
+      ? [post.employment_type]
+      : [];
+  const labels = employment
+    .map((value) => (copy.employment && copy.employment[value]) || value)
+    .filter((value, index, all) => value && all.indexOf(value) === index);
+  if (labels.length) facts.push(labels.join(" · "));
+  if (!facts.length) return null;
+  const node = document.createElement("p");
+  node.className = "sub indexed-facts";
+  node.textContent = facts.join(" · ");
+  return node;
+}
+
 function applyHowBlock(post, copy) {
   if (post.kind !== "job") return null;
+  if (post.origin === "indexed") return null;
   const guide = isProfileGuide(post.apply);
   const https = guide ? null : safeLink(post.apply, copy.apply);
   const email = mailLink(post.apply_email, copy.applyEmail);
