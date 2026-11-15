@@ -1,6 +1,12 @@
 # Daily index of public employer feeds. This file runs from main.
 # Shards are written to the index-data branch. They are not files on main.
 # A sharp drop opens an issue and does not publish. ATS requests use no token.
+#
+# On the git 2.56 runner a Bearer extraheader was not a credential:
+# git asked for a username and the step exited 128. The push now uses
+# the same Basic header as actions/checkout. The base64 form of the
+# token is masked, then removed from git config. The fetch is the full
+# branch so the next push is not a shallow update, which GitHub rejects.
 
 name: Index
 
@@ -35,17 +41,8 @@ jobs:
       - name: Prepare the data branch
         env:
           GIT_TERMINAL_PROMPT: "0"
-        run: |
-          set -euo pipefail
-          git init -b index-data data
-          git -C data config user.email "github-actions[bot]@users.noreply.github.com"
-          git -C data config user.name "github-actions[bot]"
-          git -C data remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
-          if git -C data -c credential.helper= -c http.extraheader= fetch --depth=1 origin index-data; then
-            git -C data checkout --detach FETCH_HEAD
-          else
-            git -C data commit --allow-empty -m "Start the index data branch."
-          fi
+          TOKEN: ${{ github.token }}
+        run: bash repo/scripts/index-data-remote.sh prepare data "https://github.com/${GITHUB_REPOSITORY}.git"
 
       - name: Fetch the public boards
         id: index
@@ -170,18 +167,11 @@ jobs:
         env:
           GIT_TERMINAL_PROMPT: "0"
           TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          git -C data add shards report.json
-          if git -C data diff --cached --quiet; then
-            echo "No index changes."
-            exit 0
-          fi
-          git -C data commit -m "Index public jobs."
-          git -C data \
-            -c http.extraheader="AUTHORIZATION: bearer ${TOKEN}" \
-            push origin HEAD:index-data
+        run: bash repo/scripts/index-data-remote.sh publish data
 
+      # pages.yml has workflow_dispatch, which this token is allowed to start.
+      # actions: write above is what createWorkflowDispatch requires.
+      # The workflow id is the file name and the ref is main, matching Auto-merge.
       - name: Refresh the site
         if: steps.index.outputs.publish == 'true'
         uses: actions/github-script@v7

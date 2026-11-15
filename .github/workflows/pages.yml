@@ -23,15 +23,9 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
+      # A missing index-data branch is the first deploy. Any other fetch error fails.
       - name: Fetch indexed jobs
-        run: |
-          set -euo pipefail
-          if git fetch --depth=1 origin index-data; then
-            mkdir -p index-data
-            git archive FETCH_HEAD | tar -x -C index-data
-          else
-            mkdir -p index-data
-          fi
+        run: bash scripts/fetch-index-data.sh index-data
       - name: Build the search index and permalink pages
         env:
           PAGES_ORIGIN: ${{ vars.PAGES_ORIGIN }}
