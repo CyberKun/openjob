@@ -66,9 +66,9 @@ a { color: inherit; }
 
 h1 {
   margin: 0;
-  font-size: clamp(40px, 8vw, 64px);
-  line-height: 0.9;
-  letter-spacing: 0.04em;
+  font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.05;
+  letter-spacing: 0;
   font-weight: 700;
 }
 
@@ -292,6 +292,63 @@ footer { margin-top: 28px; color: var(--muted); }
 
 .post-bar { margin: 18px 0 0; }
 
+.prompts { display: grid; gap: 12px; margin: 22px 0 8px; }
+
+.prompt {
+  border: 1px solid var(--line);
+  padding: 12px 14px 8px;
+}
+
+.prompt h2 {
+  margin: 0 0 8px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.prompt pre {
+  margin: 0;
+  padding: 10px 12px;
+  white-space: pre-wrap;
+  background: var(--wash);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.by-hand { margin: 4px 0 0; font-size: 15px; color: var(--muted); }
+
+.by-hand a { color: inherit; }
+
+.audience {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0 0 12px;
+}
+
+.audience button {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 12px 10px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.audience button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.reach, .also-profile { margin: 8px 0 0; }
+
 .agent { margin-top: 10px; }
 
 .agent summary { cursor: pointer; }
@@ -389,6 +446,10 @@ body.entry h1 {
   h2 { font-size: 24px; }
   label { min-width: 100%; }
   .share-text { font-size: 18px; }
+  .audience { grid-template-columns: 1fr; }
+  .agent-kinds .text-button,
+  .text-button,
+  .tab { min-height: 44px; }
 }
 
 .copy-status {

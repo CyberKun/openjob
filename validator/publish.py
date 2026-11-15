@@ -34,8 +34,8 @@ _TEMPLATE = _REPO_ROOT / "site" / "index.html"
 _ABOUT = _REPO_ROOT / "site" / "about" / "index.html"
 _OG_B64 = _REPO_ROOT / "site" / "og.png.b64"
 _POSITIONING = (
-    "OpenJob is a job board that lives in a Git repository: you post a role or a profile "
-    "with a pull request, people find it on a static page, and the file expires unless someone renews it."
+    "The open job board for AI agents. Agents search and submit on behalf of people. "
+    "People read the board."
 )
 
 # Newest posts on the homepage, per section. The archive pages list the rest.
@@ -99,6 +99,16 @@ def write_discovery(
     (site_dir / "jobs.json").write_text(
         _json_feed(jobs[:feed_limit], "OpenJob jobs", f"{_origin()}/jobs.json"), encoding="utf-8"
     )
+    talents = grouped["talent"]
+    (site_dir / "talents.xml").write_text(
+        _rss(talents[:feed_limit], "OpenJob talent", f"{_origin()}/talents.xml"), encoding="utf-8"
+    )
+    (site_dir / "talents.atom").write_text(
+        _atom(talents[:feed_limit], "OpenJob talent", f"{_origin()}/talents.atom"), encoding="utf-8"
+    )
+    (site_dir / "talents.json").write_text(
+        _json_feed(talents[:feed_limit], "OpenJob talent", f"{_origin()}/talents.json"), encoding="utf-8"
+    )
     (site_dir / "llms.txt").write_text(_llms(grouped), encoding="utf-8")
     (site_dir / "llms-full.txt").write_text(_llms_full(posts, llms_full_limit), encoding="utf-8")
     _write_schemas(site_dir)
@@ -111,6 +121,7 @@ def write_discovery(
         byte_limit=sitemap_byte_limit,
     )
     _write_about(site_dir)
+    _write_not_found(site_dir)
     _write_cname(site_dir)
     _write_google_file(site_dir)
     _write_og_image(site_dir)
@@ -280,11 +291,19 @@ def _archive_page(key: str, slug: str, title: str, number: int, pages: int, post
     if next_href:
         head.append(f'<a rel="next" href="{escape(next_href)}" data-i18n="next">Next</a>')
     head.append("</nav>")
-    head.append("<ul>")
-    head.extend(_post_item(post, str(post["permalink"])) for post in posts)
+    if posts:
+        head.append("<ul>")
+        head.extend(_post_item(post, str(post["permalink"])) for post in posts)
+        head.append("</ul>")
+    else:
+        empty = {
+            "job": "No jobs yet.",
+            "talent": "No profiles yet.",
+            "company": "No company pages yet.",
+        }
+        head.append(f'<p data-i18n="emptyLead.{escape(key)}">{escape(empty[key])}</p>')
     head.extend(
         [
-            "</ul>",
             "</div>",
             '<script src="../../../i18n.js"></script>',
             "</body>",
@@ -296,8 +315,9 @@ def _archive_page(key: str, slug: str, title: str, number: int, pages: int, post
 
 
 def _page_count(count: int, page_size: int) -> int:
+    """Page 1 exists even when a section has no posts, so the archive URL does not 404."""
     if count <= 0:
-        return 0
+        return 1
     return (count + page_size - 1) // page_size
 
 
@@ -394,6 +414,21 @@ def _robots() -> str:
             "# not this file. This file applies once the board has its own hostname.\n"
         )
     return note + "User-agent: *\nAllow: /\n\n" + f"Sitemap: {_origin()}/sitemap.xml\n"
+
+
+def _write_not_found(site_dir: Path) -> None:
+    """Rewrite the 404 back link to the configured origin.
+
+    Asset paths in the source file are root-absolute, so a nested miss such as
+    ``/talents/`` still loads the stylesheet from the host root.
+    """
+    source = _REPO_ROOT / "site" / "404.html"
+    if not source.is_file():
+        return
+    (site_dir / "404.html").write_text(
+        _with_origin(source.read_text(encoding="utf-8")),
+        encoding="utf-8",
+    )
 
 
 def _write_about(site_dir: Path) -> None:
@@ -531,13 +566,39 @@ def _llms(grouped: dict[str, list[dict]]) -> str:
         "",
         f"> {_POSITIONING}",
         "",
-        "Jobs, talent profiles, and company pages are Markdown files in a public GitHub repository. "
-        "One new post per pull request. A pull request that only changes the author's own post is "
-        "squash-merged after the checker passes. Any other change needs a maintainer. "
+        "Agents are the users. They search this board and submit posts for people. "
+        "People read the result. Jobs, talent profiles, and company pages are Markdown files in a public "
+        "GitHub repository. One new post per pull request. A profile is `talents/<github-login>.md`. "
+        "A company's owners edit that company and its jobs. A new company page is reviewed once. "
+        "A pull request auto-merges only when the author owns every file it changes. "
         "Phone numbers are not allowed. A talent post cannot contain an email. A job may show one "
         "hiring address when its domain matches the company website. Jobs last 60 days and talent "
-        "profiles last 180 days unless renewed. Company pages do not expire. Expired posts leave "
-        f"the index at {origin}/index.json.",
+        "profiles last 180 days unless renewed. Company pages do not expire. "
+        f"The catalog is {origin}/index.json.",
+        "",
+        "The OpenJob MCP server exposes `search_jobs`, `get_job`, `search_talent`, `get_talent`, "
+        "`validate_post`, `create_or_update_post`, and `close_job`. Read tools use the public index. "
+        "Write tools need the person's `GITHUB_TOKEN` and open one pull request as that login. "
+        "Install: `uvx --from git+https://github.com/softprobe/openjob.git openjob-mcp`.",
+        "",
+        "## Find work",
+        "",
+        f"- GET [{origin}/index.json]({origin}/index.json). Filter on `kind`, `tags`, `location`, "
+        "`remote`, `languages`, `open_to`, and `employment_type`. Read a post at its permalink "
+        "and at `index.md` beside that page.",
+        f"- Jobs only: [{origin}/jobs.json]({origin}/jobs.json), "
+        f"[{origin}/jobs.xml]({origin}/jobs.xml), and [{origin}/jobs.atom]({origin}/jobs.atom).",
+        f"- Profiles only: [{origin}/talents.json]({origin}/talents.json), "
+        f"[{origin}/talents.xml]({origin}/talents.xml), and [{origin}/talents.atom]({origin}/talents.atom).",
+        "- Rank live jobs against a resume or bio. Return each match with its permalink and the "
+        "apply method already on that post. Do not invent an email or a phone number.",
+        f"- A resume becomes a talent profile at `talents/<github-login>.md`. The filename is the "
+        f"login that opens the pull request. Follow [{origin}/schema/talent.json]({origin}/schema/talent.json). "
+        f"No email and no phone. [New talent file]({repo}/new/main/talents).",
+        "- Apply with the job's https link or the hiring address on the post. A link to this "
+        "repository's README or profile guide is not an application. Adding a profile is optional "
+        "and separate.",
+        f"- [Catalog schema]({origin}/schema/index.json).",
         "",
         "## Post",
         "",
@@ -557,10 +618,7 @@ def _llms(grouped: dict[str, list[dict]]) -> str:
     ]
     for key, slug, title in _SECTIONS:
         count = len(grouped[key])
-        if count:
-            lines.append(f"- {title}: {count}. [Archive]({_origin()}/{slug}/page/1/)")
-        else:
-            lines.append(f"- {title}: 0")
+        lines.append(f"- {title}: {count}. [Archive]({_origin()}/{slug}/page/1/)")
     lines.extend(
         [
             f"- [Sitemap]({_origin()}/sitemap.xml)",
@@ -582,13 +640,22 @@ def _llms_full(posts: list[dict], limit: int) -> str:
     faq = """## FAQ
 
 What is OpenJob?
-OpenJob is a job board stored as Markdown in a Git repository. A pull request publishes a job, a talent profile, or a company page. Readers open a static page. The file expires unless someone renews it.
+OpenJob is the open job board for AI agents. Agents search and submit on behalf of people. People read the board. Posts are Markdown files in a Git repository.
 
 How do I post a job or a talent profile?
 Copy the template, add a Markdown file under jobs/, talents/, or companies/, and open a pull request. The checker validates it. A post-only pull request merges on its own.
 
 How do I apply?
-The job page shows the application method: an email on the company domain, an https link, or both. A talent profile is another pull request under talents/. Do not put a phone number or a personal email in the profile.
+The job page shows the application method: an email on the company domain, an https link, or both. A link to this board's profile guide is not an application.
+
+How do I add a profile?
+A talent profile is talents/<your-github-name>.md. It is not how you apply to a job. Do not put a phone number or a personal email in the profile. You need a free GitHub account. You can only edit your own posts.
+
+Who can edit a post?
+Your profile is talents/<your-github-name>.md. A company page lists owners. Those owners edit the company and its jobs. A job with no company page stays with the posted_by login. A new company page is reviewed once.
+
+How do I hear about new posts?
+New jobs are in /jobs.xml, /jobs.atom, and /jobs.json. New profiles are in /talents.xml, /talents.atom, and /talents.json. The mixed feed is /feed.xml. The catalog is /index.json.
 
 Why are phone numbers and personal emails rejected?
 The board is public. Phone numbers are never accepted. Talent posts cannot contain an email. A job may list one hiring address, and only when that domain matches the company website.
@@ -641,6 +708,7 @@ _SCHEMA_PUBLIC = {
     "talent.schema.json": "talent.json",
     "company.schema.json": "company.json",
     "talent-ref.schema.json": "talent-ref.json",
+    "index.schema.json": "index.json",
     "common.json": "common.json",
 }
 
