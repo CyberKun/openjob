@@ -1,0 +1,49 @@
+{
+  "status": "ok",
+  "checked_at": "2026-11-15T13:53:32Z",
+  "failed_at": null,
+  "etag": "W/\"816dac52e67bd6ded9cd0aa8622a6d1c\"",
+  "jobs": [
+    {
+      "id": "5168367007",
+      "title": "Physician Partner",
+      "company": "Papa",
+      "location": "Remote",
+      "remote": "remote",
+      "department": "",
+      "employment_type": "",
+      "salary_text": "",
+      "salary_source": "",
+      "posted": "2026-06-18",
+      "updated": "2026-09-04",
+      "deadline": "",
+      "source_url": "https://job-boards.greenhouse.io/papa/jobs/5168367007",
+      "apply_url": "https://job-boards.greenhouse.io/papa/jobs/5168367007",
+      "first_seen": "2026-11-15T13:53:32Z",
+      "last_checked": "2026-11-15T13:53:32Z"
+    },
+    {
+      "id": "5202496007",
+      "title": "Senior Product Manager (Community)",
+      "company": "Papa",
+      "location": "San Francisco, CA (Hybrid)",
+      "remote": "hybrid",
+      "department": "",
+      "employment_type": "",
+      "salary_text": "",
+      "salary_source": "",
+      "posted": "2026-08-03",
+      "updated": "2026-08-11",
+      "deadline": "",
+      "source_url": "https://job-boards.greenhouse.io/papa/jobs/5202496007",
+      "apply_url": "https://job-boards.greenhouse.io/papa/jobs/5202496007",
+      "first_seen": "2026-11-15T13:53:32Z",
+      "last_checked": "2026-11-15T13:53:32Z"
+    }
+  ],
+  "ats": "greenhouse",
+  "board": "papa",
+  "slug": "papa",
+  "name": "Papa",
+  "website": "https://papa.com"
+}

@@ -1,11 +1,16 @@
 {
-  "generated": "2026-11-15T07:11:53Z",
+  "generated": "2026-11-15T13:53:32Z",
   "publish": true,
-  "companies": 69,
-  "jobs": 11355,
-  "before": {},
-  "after": {
+  "companies": 169,
+  "jobs": 13926,
+  "before": {
     "greenhouse": 8712,
+    "ashby": 2248,
+    "lever": 389,
+    "workable": 6
+  },
+  "after": {
+    "greenhouse": 11283,
     "ashby": 2248,
     "workable": 6,
     "lever": 389

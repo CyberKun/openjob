@@ -1,0 +1,31 @@
+{
+  "status": "ok",
+  "checked_at": "2026-11-15T13:53:32Z",
+  "failed_at": null,
+  "etag": "W/\"0090cd29024af2aa17b69376ce04a842\"",
+  "jobs": [
+    {
+      "id": "6270031003",
+      "title": "Join Our Talent Community",
+      "company": "Firaxis",
+      "location": "Sparks Glencoe, Maryland, United States",
+      "remote": "unspecified",
+      "department": "",
+      "employment_type": "",
+      "salary_text": "",
+      "salary_source": "",
+      "posted": "2024-11-12",
+      "updated": "2026-10-27",
+      "deadline": "",
+      "source_url": "https://job-boards.greenhouse.io/firaxis/jobs/6270031003",
+      "apply_url": "https://job-boards.greenhouse.io/firaxis/jobs/6270031003",
+      "first_seen": "2026-11-15T13:53:32Z",
+      "last_checked": "2026-11-15T13:53:32Z"
+    }
+  ],
+  "ats": "greenhouse",
+  "board": "firaxis",
+  "slug": "firaxis",
+  "name": "Firaxis",
+  "website": "https://firaxis.com"
+}

@@ -1,0 +1,49 @@
+{
+  "status": "ok",
+  "checked_at": "2026-11-15T13:53:32Z",
+  "failed_at": null,
+  "etag": "W/\"677fc072a7952c4d13e0cb64b8c757b2\"",
+  "jobs": [
+    {
+      "id": "8336735",
+      "title": "Senior Software Engineer II, Cloud Security",
+      "company": "Qualia",
+      "location": "Austin, TX",
+      "remote": "unspecified",
+      "department": "",
+      "employment_type": "",
+      "salary_text": "",
+      "salary_source": "",
+      "posted": "2026-11-05",
+      "updated": "2026-11-05",
+      "deadline": "",
+      "source_url": "https://job-boards.greenhouse.io/qualia/jobs/8336735",
+      "apply_url": "https://job-boards.greenhouse.io/qualia/jobs/8336735",
+      "first_seen": "2026-11-15T13:53:32Z",
+      "last_checked": "2026-11-15T13:53:32Z"
+    },
+    {
+      "id": "8336737",
+      "title": "Engineering Manager II, Cloud Security",
+      "company": "Qualia",
+      "location": "Austin, TX",
+      "remote": "unspecified",
+      "department": "",
+      "employment_type": "",
+      "salary_text": "",
+      "salary_source": "",
+      "posted": "2026-11-03",
+      "updated": "2026-11-05",
+      "deadline": "",
+      "source_url": "https://job-boards.greenhouse.io/qualia/jobs/8336737",
+      "apply_url": "https://job-boards.greenhouse.io/qualia/jobs/8336737",
+      "first_seen": "2026-11-15T13:53:32Z",
+      "last_checked": "2026-11-15T13:53:32Z"
+    }
+  ],
+  "ats": "greenhouse",
+  "board": "qualia",
+  "slug": "qualia",
+  "name": "Qualia",
+  "website": "https://qualia.com"
+}
