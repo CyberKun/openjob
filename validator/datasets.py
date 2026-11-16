@@ -14,7 +14,7 @@ from validator.posts import load_post, schema_dir
 VERSION = "1"
 MAX_ROWS = 1000
 MAX_BYTES = 10 * 1024 * 1024
-ORIGIN = "https://api.openjob.softprobe.ai"
+ORIGIN = "https://openjob.softprobe.ai"
 
 
 def _json(value: object) -> bytes:

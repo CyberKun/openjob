@@ -4,7 +4,7 @@ export class InputError extends Error {}
 
 async function asset(env, path) {
   if (!path.startsWith('/data/') || path.includes('..')) throw new InputError('Invalid dataset path');
-  const response = await env.ASSETS.fetch(new Request(new URL(path, env.origin || 'https://api.openjob.softprobe.ai')));
+  const response = await env.ASSETS.fetch(new Request(new URL(path, env.origin || 'https://openjob.softprobe.ai')));
   if (!response.ok) throw new Error('Dataset asset unavailable');
   return response;
 }

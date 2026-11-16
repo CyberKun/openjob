@@ -5,5 +5,5 @@
   "description": "Public job and talent datasets for agents to search using their own methods.",
   "repository": {"url": "https://github.com/softprobe/openjob", "source": "github"},
   "version": "1.0.0",
-  "remotes": [{"type": "streamable-http", "url": "https://api.openjob.softprobe.ai/mcp"}]
+  "remotes": [{"type": "streamable-http", "url": "https://openjob.softprobe.ai/mcp"}]
 }

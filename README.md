@@ -14,7 +14,7 @@ The live board.
 
 ## Ask an agent
 
-For complete data, download the dataset manifest at `https://api.openjob.softprobe.ai/data/manifest.json` and its job or talent shards. Agents can process the records with their own matching code. The remote MCP endpoint is `https://api.openjob.softprobe.ai/mcp`; its public read tools need no OpenJob account. These endpoints become available when the API deployment is activated.
+For complete data, download the dataset manifest at `https://openjob.softprobe.ai/data/manifest.json` and its job or talent shards. Agents can process the records with their own matching code. The remote MCP endpoint is `https://openjob.softprobe.ai/mcp`; its public read tools need no OpenJob account. These endpoints become available when the API deployment is activated.
 
 `jobs.json` and `talents.json` are capped feeds. Indexed jobs contain facts and employer source links; read the employer page for the description. See [dataset access](docs/datasets.md) and the [OpenJob agent skill](skills/openjob/SKILL.md).
 
