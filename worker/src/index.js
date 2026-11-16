@@ -36,6 +36,11 @@ export default {
     const dataEnv = { ASSETS: env.ASSETS, origin: url.origin };
     if (url.pathname === '/mcp') return createMcpHandler(() => serverFor(dataEnv))(request, env, ctx);
     if (url.pathname.startsWith('/data/')) return env.ASSETS.fetch(request);
+    const apiPath = url.pathname === '/health' || url.pathname.startsWith('/v1/');
+    if (!apiPath) {
+      if (request.method !== 'GET' && request.method !== 'HEAD') return new Response('Method not allowed', {status: 405});
+      return fetch(request);
+    }
     if (request.method !== 'GET') return new Response('Method not allowed', {status: 405});
     const options = Object.fromEntries(url.searchParams);
     try {
