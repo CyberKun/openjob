@@ -4,7 +4,7 @@ OpenJob builds complete job and public talent datasets from the same catalog sna
 
 R2 stores the compressed shard objects. The Worker streams the `.jsonl.gz` download as-is and decompresses the same object when an agent requests the plain `.jsonl` URL. The manifest and checksums describe the bytes returned at each URL.
 
-Snapshots are retained indefinitely. No R2 lifecycle expiration is configured: old manifests or clients may still reference an earlier immutable snapshot. Add cleanup only when it can reliably preserve every snapshot that remains reachable from a published or cached manifest.
+Snapshots are retained indefinitely. The bucket's only current R2 lifecycle action aborts incomplete multipart uploads after seven days; no object expiration is configured. Old manifests or clients may still reference an earlier immutable snapshot. Add cleanup only when it can reliably preserve every snapshot that remains reachable from a published or cached manifest.
 
 Agents can download every shard and apply their own search and matching code. The dependency-free example prints records as JSON Lines:
 
