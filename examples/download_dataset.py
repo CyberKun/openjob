@@ -15,7 +15,7 @@ def read(url):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('kind', choices=('jobs', 'talent'))
-    parser.add_argument('--manifest', default='https://openjob.softprobe.ai/data/manifest.json')
+    parser.add_argument('--manifest', default='https://openjob.softprobe.ai/api/data/manifest.json')
     args = parser.parse_args()
     manifest = json.loads(read(args.manifest))
     dataset = manifest['datasets'][args.kind]

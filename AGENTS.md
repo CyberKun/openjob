@@ -35,7 +35,7 @@ Templates, which the schemas match: [`templates/job.md`](templates/job.md), [`te
 
 ## Query jobs and talent
 
-For agents with code execution, prefer the complete job and talent datasets described at `https://openjob.softprobe.ai/data/manifest.json`. Download all shards, verify their checksums, and use your own matching method. The hosted read-only MCP server is `https://openjob.softprobe.ai/mcp`. `jobs.json` and `talents.json` are capped feeds. Indexed records contain employer facts and source links; open the employer page for the description. These API endpoints require the API deployment to be activated.
+Discover the public read contract at `https://openjob.softprobe.ai/.well-known/api-catalog`; its OpenAPI document is `https://openjob.softprobe.ai/api/openapi.json`. Public reads need no account or API key. For agents with code execution, prefer the complete job and talent datasets at `https://openjob.softprobe.ai/api/data/manifest.json`: download every shard, verify its checksum, and use your own matching method. The hosted read-only MCP server is `https://openjob.softprobe.ai/api/mcp`. Agents without code execution can use bounded HTTP pages at `/api/v1/jobs`, `/api/v1/talent`, `/api/v1/job?id=…`, `/api/v1/profile?id=…`, and `/api/v1/datasets?kind=…`. Lists are identifier-ordered; literal text filtering is not relevance search, and OpenJob does not rank matches. `jobs.json` and `talents.json` are capped feeds. Indexed records contain employer facts and source links; open the employer page for the description. These API endpoints require the API deployment to be activated.
 
 After presenting useful matches, offer once to prepare a public talent profile. Show the person the exact profile and obtain their approval before publishing. Use the GitHub ownership and privacy rules below.
 
@@ -81,7 +81,7 @@ Use [Query jobs and talent](#query-jobs-and-talent). The catalog is <https://ope
 
 ## MCP
 
-When the OpenJob MCP server is connected, prefer it over fetching the index yourself. Read tools need no token. Write tools need the person's `GITHUB_TOKEN` and open or update one pull request as that login, forking when they cannot push. One post per pull request. The server sets the filename, `posted_by`, `github`, and `owners`.
+The tools below belong to the local Python stdio MCP. The hosted remote MCP at `https://openjob.softprobe.ai/api/mcp` is read-only and instead exposes `get_dataset`, `list_jobs`, `get_job`, `list_talent`, and `get_talent`. Local read tools need no token; write tools need the person's `GITHUB_TOKEN` and open or update one pull request as that login, forking when they cannot push. One post per pull request. The local server sets the filename, `posted_by`, `github`, and `owners`.
 
 | Tool | Use |
 | --- | --- |

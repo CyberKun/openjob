@@ -14,7 +14,7 @@ from validator.posts import load_post, schema_dir
 VERSION = "1"
 MAX_ROWS = 1000
 MAX_BYTES = 10 * 1024 * 1024
-ORIGIN = "https://openjob.softprobe.ai"
+ORIGIN = "https://openjob.softprobe.ai/api"
 
 
 def _json(value: object) -> bytes:
@@ -79,7 +79,7 @@ def write_datasets(root: Path, out: Path, document: dict, *, origin: str = ORIGI
             rows.append((record["path"], line))
             size += len(line)
         flush()
-        datasets[group] = {"count": len(records), "schema_url": f"{origin}/data/snapshots/{snapshot}/record.schema.json", "shards": shards}
+        datasets[group] = {"complete": True, "count": len(records), "schema_url": f"{origin}/data/snapshots/{snapshot}/record.schema.json", "shards": shards}
     schema = json.loads((schema_dir() / "index.schema.json").read_text(encoding="utf-8"))["$defs"]["post"]
     schema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
     schema["title"] = "OpenJob dataset record"

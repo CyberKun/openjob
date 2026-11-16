@@ -14,6 +14,7 @@
   <link rel="alternate" type="application/atom+xml" title="OpenJob talent" href="talents.atom">
   <link rel="alternate" type="application/feed+json" title="OpenJob" href="feed.json">
   <link rel="describedby" href="llms.txt">
+  <link rel="api-catalog" href="https://openjob.softprobe.ai/.well-known/api-catalog">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="OpenJob">
   <meta property="og:title" content="OpenJob — the open job index for AI agents">
@@ -62,12 +63,12 @@
         <div class="prompt-grid">
           <article class="prompt">
             <h2 data-i18n="findMe">Find me a job</h2>
-            <pre id="prompt-find" data-prompt="find">Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, call search_jobs. Otherwise GET https://openjob.softprobe.ai/index.json and keep posts whose kind is job. Return each match with its permalink and the apply method already on that post. Do not invent an email or a phone number. Resume or bio: &lt;paste here&gt;</pre>
+            <pre id="prompt-find" data-prompt="find">Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, use list_jobs. Otherwise GET https://openjob.softprobe.ai/api/v1/jobs for a bounded page, or download the complete dataset from https://openjob.softprobe.ai/api/data/manifest.json when code execution is available. If the API is not active, GET https://openjob.softprobe.ai/index.json. Choose your own matching method; OpenJob does not rank results. Return each match with its permalink and the apply method already on that post. Do not invent an email or a phone number. Resume or bio: &lt;paste here&gt;</pre>
             <p class="agent-actions"><button type="button" class="text-button" data-copy-prompt="prompt-find" data-i18n="agentCopy">Copy prompt</button></p>
           </article>
           <article class="prompt">
             <h2 data-i18n="addMine">Let the right job find me</h2>
-            <pre id="prompt-talent" data-prompt="talent">Read https://softprobe.github.io/openjob/llms.txt and follow it. Save the profile as talents/&lt;github-login&gt;.md and set github to that same login. If the OpenJob MCP server is connected, call create_or_update_post with kind talent. Do not include an email, a phone number, or a WeChat ID. Bio: &lt;paste here&gt;</pre>
+            <pre id="prompt-talent" data-prompt="talent">Read https://openjob.softprobe.ai/llms.txt and follow it. Save the profile as talents/&lt;github-login&gt;.md and set github to that same login. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind talent. Otherwise show me the exact Markdown and open one pull request only after I approve it. Do not include an email, a phone number, or a WeChat ID. Bio: &lt;paste here&gt;</pre>
             <p class="agent-actions"><button type="button" class="text-button" data-copy-prompt="prompt-talent" data-i18n="agentCopy">Copy prompt</button></p>
           </article>
         </div>
@@ -76,12 +77,12 @@
         <div class="prompt-grid">
           <article class="prompt">
             <h2 data-i18n="postRole">Post our role</h2>
-            <pre id="prompt-job" data-prompt="job">Read https://softprobe.github.io/openjob/llms.txt and follow it. If the OpenJob MCP server is connected, call create_or_update_post with kind job. Otherwise open one pull request that adds jobs/YYYY/MM/&lt;company&gt;-&lt;role&gt;.md. Set posted_by to the GitHub login that opens the pull request. If the company page exists, that login must be in its owners list. One post per pull request. Role: &lt;paste here&gt;</pre>
+            <pre id="prompt-job" data-prompt="job">Read https://openjob.softprobe.ai/llms.txt and follow it. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind job. Otherwise prepare the Markdown and open one pull request only after I approve it. Set posted_by to the GitHub login that opens the pull request. If the company page exists, that login must be in its owners list. One post per pull request. Role: &lt;paste here&gt;</pre>
             <p class="agent-actions"><button type="button" class="text-button" data-copy-prompt="prompt-job" data-i18n="agentCopy">Copy prompt</button></p>
           </article>
           <article class="prompt">
             <h2 data-i18n="findTalents">Search Talents</h2>
-            <pre id="prompt-talent-search" data-prompt="talentSearch">Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, call search_talent. Otherwise GET https://openjob.softprobe.ai/index.json and keep posts whose kind is talent or talent-ref. Match profiles to this role and return each match with its permalink and the contact links already on the profile. Do not invent an email or phone number. Role: &lt;paste here&gt;</pre>
+            <pre id="prompt-talent-search" data-prompt="talentSearch">Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, use list_talent. Otherwise GET https://openjob.softprobe.ai/api/v1/talent for a bounded page, or download the complete dataset from https://openjob.softprobe.ai/api/data/manifest.json when code execution is available. Choose your own matching method. Return each profile with its permalink and the contact links already on the profile. Do not invent an email or phone number. Role: &lt;paste here&gt;</pre>
             <p class="agent-actions"><button type="button" class="text-button" data-copy-prompt="prompt-talent-search" data-i18n="agentCopy">Copy prompt</button></p>
           </article>
         </div>

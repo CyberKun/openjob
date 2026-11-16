@@ -1,6 +1,6 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
   "mcpServers": {
-    "openjob": {"type": "streamable-http", "url": "https://openjob.softprobe.ai/mcp"}
+    "openjob": {"type": "streamable-http", "url": "https://openjob.softprobe.ai/api/mcp"}
   }
 }
