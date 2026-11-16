@@ -3,7 +3,13 @@ set -euo pipefail
 
 datasets_dir="${1:?usage: upload-datasets-to-r2.sh DATASETS_DIRECTORY}"
 bucket="${OPENJOB_R2_BUCKET:-openjob-datasets}"
-cf_bin="${OPENJOB_CF_BIN:-worker/node_modules/.bin/cf}"
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(dirname -- "$script_dir")"
+cf_bin="${OPENJOB_CF_BIN:-$repo_root/worker/node_modules/.bin/cf}"
+
+run_cf() {
+  (cd -- "$repo_root/worker" && "$cf_bin" "$@")
+}
 
 if [[ ! -f "$datasets_dir/manifest.json" ]]; then
   echo "Missing dataset manifest: $datasets_dir/manifest.json" >&2
@@ -30,12 +36,12 @@ for file in "$datasets_dir"/*; do
     *.jsonl.gz) content_type="application/gzip" ;;
     *) echo "Unexpected dataset artifact: $name" >&2; exit 1 ;;
   esac
-  "$cf_bin" r2 objects put "snapshots/$snapshot/$name" \
+  run_cf r2 objects put "snapshots/$snapshot/$name" \
     --bucket-name "$bucket" --file "$file" --content-type "$content_type" --quiet >/dev/null
 done
 
 # Publish the pointer only after every immutable snapshot object is present.
-"$cf_bin" r2 objects put manifest.json \
+run_cf r2 objects put manifest.json \
   --bucket-name "$bucket" --file "$datasets_dir/manifest.json" \
   --content-type application/json --quiet >/dev/null
 

@@ -23,3 +23,20 @@ class DownloadExampleTests(unittest.TestCase):
             with patch.object(download_dataset, 'read', side_effect=read), patch.object(sys, 'argv', ['download_dataset.py', 'jobs', '--manifest', 'manifest']), contextlib.redirect_stdout(output), contextlib.redirect_stderr(io.StringIO()):
                 download_dataset.main()
             self.assertEqual(len([json.loads(line) for line in output.getvalue().splitlines()]), manifest['datasets']['jobs']['count'])
+
+    def test_rejects_wrong_shard_count_before_printing_that_shard(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            posts = [{'kind': 'job', 'path': f'indexed/{i:04}', 'title': 'Engineer', 'origin': 'indexed', 'source_url': 'https://example.com'} for i in range(1002)]
+            manifest = write_datasets(root, root / 'data', {'generated': '2026-11-15T00:00:00Z', 'source': 'https://github.com/softprobe/openjob', 'posts': posts})
+            manifest['datasets']['jobs']['shards'][0]['count'] += 1
+            manifest['datasets']['jobs']['count'] += 1
+            def read(url):
+                if url == 'manifest':
+                    return json.dumps(manifest).encode()
+                return (root / 'data' / url.rsplit('/', 1)[-1]).read_bytes()
+            output = io.StringIO()
+            with patch.object(download_dataset, 'read', side_effect=read), patch.object(sys, 'argv', ['download_dataset.py', 'jobs', '--manifest', 'manifest']), contextlib.redirect_stdout(output), contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaisesRegex(ValueError, 'shard count'):
+                    download_dataset.main()
+            self.assertEqual(output.getvalue(), '')

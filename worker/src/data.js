@@ -13,32 +13,45 @@ function objectKey(path) {
   return key;
 }
 
-async function asset(env, path) {
+async function loadAsset(env, path, includeBody = true) {
   const key = objectKey(path);
   const compressed = key.endsWith('.jsonl');
   const object = await env.DATASETS.get(compressed ? `${key}.gz` : key);
-  if (!object) throw new Error('Dataset asset unavailable');
+  if (!object) return null;
   const headers = new Headers();
   object.writeHttpMetadata(headers);
-  const body = compressed ? object.body.pipeThrough(new DecompressionStream('gzip')) : object.body;
-  return new Response(body, {headers});
+  // R2 metadata describes the stored gzip bytes, not the decompressed .jsonl
+  // representation. A .jsonl.gz download is also a gzip file, not an
+  // HTTP-compressed response.
+  headers.delete('content-encoding');
+  if (compressed) {
+    headers.delete('content-length');
+    headers.delete('etag');
+  } else {
+    headers.set('etag', object.httpEtag);
+  }
+  const body = includeBody
+    ? (compressed ? object.body.pipeThrough(new DecompressionStream('gzip')) : object.body)
+    : null;
+  return {key, object, headers, body};
+}
+
+async function asset(env, path) {
+  const result = await loadAsset(env, path);
+  if (!result) throw new Error('Dataset asset unavailable');
+  return new Response(result.body, {headers: result.headers});
 }
 
 export async function serveDataAsset(request, env) {
   if (request.method !== 'GET' && request.method !== 'HEAD') return new Response('Method not allowed', {status: 405});
   try {
-    const key = objectKey(new URL(request.url).pathname);
-    const compressed = key.endsWith('.jsonl');
-    const object = await env.DATASETS.get(compressed ? `${key}.gz` : key);
-    if (!object) return new Response('Not found', {status: 404});
-    const headers = new Headers();
-    object.writeHttpMetadata(headers);
-    if (compressed) headers.delete('etag');
-    else headers.set('etag', object.httpEtag);
+    const result = await loadAsset(env, new URL(request.url).pathname, request.method !== 'HEAD');
+    if (!result) return new Response('Not found', {status: 404});
+    const {key, object, headers, body} = result;
     headers.set('cache-control', key === 'manifest.json' ? 'public, max-age=60' : 'public, max-age=31536000, immutable');
     headers.set('content-type', key.endsWith('.jsonl.gz') ? 'application/gzip' : key.endsWith('.jsonl') ? 'application/x-ndjson' : 'application/json');
-    const body = compressed ? object.body.pipeThrough(new DecompressionStream('gzip')) : object.body;
-    return new Response(request.method === 'HEAD' ? null : body, {headers});
+    if (request.method === 'HEAD') await object.body?.cancel();
+    return new Response(body, {headers});
   } catch (error) {
     if (error instanceof InputError) return new Response(error.message, {status: 400});
     return new Response('Dataset unavailable; try again later', {status: 503});

@@ -72,9 +72,7 @@ jobs:
         run: bash scripts/upload-datasets-to-r2.sh build/datasets
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: fb4b299688885a31058d94ee11ee1129
       - run: npm run typecheck && npm test && npx cf build && npx cf deploy
         working-directory: worker
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: fb4b299688885a31058d94ee11ee1129

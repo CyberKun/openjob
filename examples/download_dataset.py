@@ -18,19 +18,25 @@ def main():
     parser.add_argument('--manifest', default='https://openjob.softprobe.ai/data/manifest.json')
     args = parser.parse_args()
     manifest = json.loads(read(args.manifest))
+    dataset = manifest['datasets'][args.kind]
+    shards = dataset['shards']
+    if sum(shard['count'] for shard in shards) != dataset['count']:
+        raise ValueError('Dataset manifest shard counts do not match dataset count')
     count = 0
-    for shard in manifest['datasets'][args.kind]['shards']:
+    for shard in shards:
         raw = read(shard['gzip']['url'])
         if hashlib.sha256(raw).hexdigest() != shard['gzip']['sha256']:
             raise ValueError('Dataset checksum mismatch')
         data = gzip.decompress(raw)
         if hashlib.sha256(data).hexdigest() != shard['sha256']:
             raise ValueError('Uncompressed dataset checksum mismatch')
-        for line in data.splitlines():
-            record = json.loads(line)
+        records = [json.loads(line) for line in data.splitlines()]
+        if len(records) != shard['count']:
+            raise ValueError('Dataset shard count mismatch')
+        for record in records:
             print(json.dumps(record, ensure_ascii=False))
-            count += 1
-    if count != manifest['datasets'][args.kind]['count']:
+        count += len(records)
+    if count != dataset['count']:
         raise ValueError('Dataset count mismatch')
     print(f"Read {count} records from snapshot {manifest['snapshot_id']}", file=sys.stderr)
 
