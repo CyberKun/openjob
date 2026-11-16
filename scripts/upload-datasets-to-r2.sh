@@ -14,7 +14,7 @@ if [[ ! -x "$cf_bin" ]]; then
   exit 1
 fi
 
-snapshot="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["snapshot_id"])' "$datasets_dir/manifest.json")"
+snapshot="$(node -e 'const fs=require("node:fs"); console.log(JSON.parse(fs.readFileSync(process.argv[1], "utf8")).snapshot_id)' "$datasets_dir/manifest.json")"
 if [[ ! "$snapshot" =~ ^[0-9a-f]{64}$ ]]; then
   echo "Invalid snapshot ID in manifest" >&2
   exit 1
@@ -31,12 +31,12 @@ for file in "$datasets_dir"/*; do
     *) echo "Unexpected dataset artifact: $name" >&2; exit 1 ;;
   esac
   "$cf_bin" r2 objects put "snapshots/$snapshot/$name" \
-    --bucket-name "$bucket" --file "$file" --content-type "$content_type" --quiet
+    --bucket-name "$bucket" --file "$file" --content-type "$content_type" --quiet >/dev/null
 done
 
 # Publish the pointer only after every immutable snapshot object is present.
 "$cf_bin" r2 objects put manifest.json \
   --bucket-name "$bucket" --file "$datasets_dir/manifest.json" \
-  --content-type application/json --quiet
+  --content-type application/json --quiet >/dev/null
 
 echo "Published OpenJob dataset snapshot $snapshot to R2 bucket $bucket"
