@@ -2,11 +2,47 @@ const fields = ['location', 'remote', 'language', 'tag', 'employment_type', 'ope
 
 export class InputError extends Error {}
 
+function objectKey(path) {
+  if (typeof path !== 'string' || !path.startsWith('/data/')) throw new InputError('Invalid dataset path');
+  let key;
+  try { key = decodeURIComponent(path.slice('/data/'.length)); }
+  catch { throw new InputError('Invalid dataset path'); }
+  if (!key || key.startsWith('/') || key.includes('\\') || key.includes('\0') || key.split('/').some(part => !part || part === '.' || part === '..')) {
+    throw new InputError('Invalid dataset path');
+  }
+  return key;
+}
+
 async function asset(env, path) {
-  if (!path.startsWith('/data/') || path.includes('..')) throw new InputError('Invalid dataset path');
-  const response = await env.ASSETS.fetch(new Request(new URL(path, env.origin || 'https://openjob.softprobe.ai')));
-  if (!response.ok) throw new Error('Dataset asset unavailable');
-  return response;
+  const key = objectKey(path);
+  const compressed = key.endsWith('.jsonl');
+  const object = await env.DATASETS.get(compressed ? `${key}.gz` : key);
+  if (!object) throw new Error('Dataset asset unavailable');
+  const headers = new Headers();
+  object.writeHttpMetadata(headers);
+  const body = compressed ? object.body.pipeThrough(new DecompressionStream('gzip')) : object.body;
+  return new Response(body, {headers});
+}
+
+export async function serveDataAsset(request, env) {
+  if (request.method !== 'GET' && request.method !== 'HEAD') return new Response('Method not allowed', {status: 405});
+  try {
+    const key = objectKey(new URL(request.url).pathname);
+    const compressed = key.endsWith('.jsonl');
+    const object = await env.DATASETS.get(compressed ? `${key}.gz` : key);
+    if (!object) return new Response('Not found', {status: 404});
+    const headers = new Headers();
+    object.writeHttpMetadata(headers);
+    if (compressed) headers.delete('etag');
+    else headers.set('etag', object.httpEtag);
+    headers.set('cache-control', key === 'manifest.json' ? 'public, max-age=60' : 'public, max-age=31536000, immutable');
+    headers.set('content-type', key.endsWith('.jsonl.gz') ? 'application/gzip' : key.endsWith('.jsonl') ? 'application/x-ndjson' : 'application/json');
+    const body = compressed ? object.body.pipeThrough(new DecompressionStream('gzip')) : object.body;
+    return new Response(request.method === 'HEAD' ? null : body, {headers});
+  } catch (error) {
+    if (error instanceof InputError) return new Response(error.message, {status: 400});
+    return new Response('Dataset unavailable; try again later', {status: 503});
+  }
 }
 
 export async function manifest(env) {

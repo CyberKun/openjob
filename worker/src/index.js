@@ -1,7 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/server';
 import { createMcpHandler } from 'agents/mcp/server';
 import { z } from 'zod';
-import { getDataset, list, get, manifest, InputError } from './data.js';
+import { getDataset, list, get, manifest, serveDataAsset, InputError } from './data.js';
 
 const filterSchema = {
   text: z.string().optional().describe('Literal case-insensitive substring, not a relevance query.'),
@@ -33,9 +33,9 @@ function serverFor(env) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    const dataEnv = { ASSETS: env.ASSETS, origin: url.origin };
+    const dataEnv = { DATASETS: env.DATASETS };
     if (url.pathname === '/mcp') return createMcpHandler(() => serverFor(dataEnv))(request, env, ctx);
-    if (url.pathname.startsWith('/data/')) return env.ASSETS.fetch(request);
+    if (url.pathname.startsWith('/data/')) return serveDataAsset(request, dataEnv);
     if (request.method !== 'GET') return new Response('Method not allowed', {status: 405});
     const options = Object.fromEntries(url.searchParams);
     try {
