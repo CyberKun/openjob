@@ -3,7 +3,11 @@ const fields = ['location', 'remote', 'language', 'tag', 'employment_type', 'ope
 export class InputError extends Error {}
 
 function objectKey(path) {
-  if (typeof path !== 'string' || !path.startsWith('/data/')) throw new InputError('Invalid dataset path');
+  if (typeof path !== 'string') throw new InputError('Invalid dataset path');
+  // Public downloads live under /api on the site hostname, while R2 keys are
+  // rooted at data/. Keep the public URL prefix out of the stored object key.
+  path = path.replace(/^\/api(?=\/data\/)/, '');
+  if (!path.startsWith('/data/')) throw new InputError('Invalid dataset path');
   let key;
   try { key = decodeURIComponent(path.slice('/data/'.length)); }
   catch { throw new InputError('Invalid dataset path'); }

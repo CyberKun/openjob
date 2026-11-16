@@ -5,7 +5,7 @@ import worker from '../src/index.js';
 import {serveDataAsset} from '../src/data.js';
 
 test('unknown API paths return not found', async () => {
-  const request = new Request('https://openjob.softprobe.ai/v1/unknown');
+  const request = new Request('https://openjob.softprobe.ai/api/v1/unknown');
   const response = await worker.fetch(request, {DATASETS: {get: async () => null}}, {});
   assert.equal(response.status, 404);
 });
@@ -18,7 +18,7 @@ test('dataset routes stream objects from the R2 binding', async () => {
     if (key !== 'manifest.json') return null;
     return {body:new ReadableStream({start(controller){controller.enqueue(bytes);controller.close();}}),httpEtag:'etag',writeHttpMetadata(headers){headers.set('content-type','application/json');}};
   }}};
-  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/data/manifest.json'), env, {});
+  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/api/data/manifest.json'), env, {});
   assert.equal(response.status, 200);
   assert.equal(await response.text(), '{"snapshot_id":"current"}\n');
   assert.deepEqual(keys, ['manifest.json']);
@@ -47,7 +47,7 @@ test('plain JSONL decompresses gzip and drops stored-object headers', async () =
     keys.push(key);
     return r2Object(compressed, key);
   }}};
-  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/data/jobs-000.jsonl'), env, {});
+  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/api/data/jobs-000.jsonl'), env, {});
 
   assert.equal(response.status, 200);
   assert.equal(await response.text(), plain.toString());
@@ -62,7 +62,7 @@ test('plain JSONL decompresses gzip and drops stored-object headers', async () =
 test('gzip download preserves the stored bytes without HTTP content encoding', async () => {
   const compressed = gzipSync(Buffer.from('{"path":"jobs/example.md"}\n'));
   const env = {DATASETS: {get: async key => r2Object(compressed, key)}};
-  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/data/jobs-000.jsonl.gz'), env, {});
+  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/api/data/jobs-000.jsonl.gz'), env, {});
 
   assert.equal(response.status, 200);
   assert.deepEqual(Buffer.from(await response.arrayBuffer()), compressed);
@@ -75,7 +75,7 @@ test('HEAD cancels the unused R2 body without decompressing it', async () => {
   let cancelled = false;
   const compressed = gzipSync(Buffer.from('unused'));
   const env = {DATASETS: {get: async key => r2Object(compressed, key, () => { cancelled = true; }, true)}};
-  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/data/jobs-000.jsonl', {method: 'HEAD'}), env, {});
+  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/api/data/jobs-000.jsonl', {method: 'HEAD'}), env, {});
 
   assert.equal(response.status, 200);
   assert.equal(response.body, null);
@@ -85,7 +85,7 @@ test('HEAD cancels the unused R2 body without decompressing it', async () => {
 test('POST is rejected before reading R2', async () => {
   let reads = 0;
   const env = {DATASETS: {get: async () => { reads++; return null; }}};
-  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/data/manifest.json', {method: 'POST'}), env, {});
+  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/api/data/manifest.json', {method: 'POST'}), env, {});
 
   assert.equal(response.status, 405);
   assert.equal(reads, 0);

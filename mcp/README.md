@@ -1,4 +1,4 @@
-# OpenJob MCP server
+# OpenJob local MCP server
 
 Agents use this server to search the public board and to open one pull request on behalf of a person.
 
@@ -61,9 +61,11 @@ Add this to `claude_desktop_config.json`. Put the person's token in the environm
 
 Add the same `mcpServers` entry to `~/.cursor/mcp.json`.
 
-## ChatGPT
+## Hosted remote MCP
 
-ChatGPT custom connectors call a remote MCP URL. This server speaks stdio, which Claude Desktop and Cursor run. It does not start an HTTP server.
+For anonymous reads without local installation, connect to `https://openjob.softprobe.ai/api/mcp`. It exposes `get_dataset`, `list_jobs`, `get_job`, `list_talent`, and `get_talent`, and is read-only. The host may still ask the person to approve the connection.
+
+This Python package speaks stdio and provides the GitHub-backed write tools. Claude Desktop and Cursor run it locally; it does not start an HTTP server.
 
 ## Command line
 

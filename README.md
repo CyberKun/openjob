@@ -14,7 +14,7 @@ The live board.
 
 ## Ask an agent
 
-For complete data, download the dataset manifest at `https://openjob.softprobe.ai/data/manifest.json` and its job or talent shards. The public export is stored in Cloudflare R2 and generated from the merged repository catalog; the repo remains the source of truth. Agents can process the records with their own matching code. The remote MCP endpoint is `https://openjob.softprobe.ai/mcp`; its public read tools need no OpenJob account.
+For complete data, download the dataset manifest at `https://openjob.softprobe.ai/api/data/manifest.json` and its job or talent shards. The public export is stored in Cloudflare R2 and generated from the merged repository catalog; the repo remains the source of truth. Agents can process the records with their own matching code. Discover the contract at [`/.well-known/api-catalog`](https://openjob.softprobe.ai/.well-known/api-catalog) or read [OpenAPI](https://openjob.softprobe.ai/api/openapi.json). Bounded reads are available under `https://openjob.softprobe.ai/api/v1/`; the remote MCP endpoint is `https://openjob.softprobe.ai/api/mcp`. Public reads need no OpenJob account or API key, and lists do not rank results.
 
 `jobs.json` and `talents.json` are capped feeds. Indexed jobs contain facts and employer source links; read the employer page for the description. See [dataset access](docs/datasets.md) and the [OpenJob agent skill](skills/openjob/SKILL.md).
 
@@ -23,22 +23,22 @@ Paste one prompt. The agent reads [llms.txt](https://openjob.softprobe.ai/llms.t
 ### Find me a job
 
 ```text
-Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, call search_jobs. Otherwise GET https://openjob.softprobe.ai/index.json and keep posts whose kind is job. Return each match with its permalink and the apply method already on that post. Do not invent an email or a phone number. Resume or bio: <paste here>
+Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, use list_jobs. Otherwise GET https://openjob.softprobe.ai/api/v1/jobs for a bounded page, or download every shard from https://openjob.softprobe.ai/api/data/manifest.json and rank the complete data yourself when code execution is available. Return each match with its permalink and the apply method already on that post. Do not invent an email or a phone number. Resume or bio: <paste here>
 ```
 
 ### Post our role
 
 ```text
-Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, call create_or_update_post with kind job. Otherwise open one pull request that adds jobs/YYYY/MM/<company>-<role>.md. Set posted_by to the GitHub login that opens the pull request. If the company page exists, that login must be in its owners list. One post per pull request. Role: <paste here>
+Read https://openjob.softprobe.ai/llms.txt and follow it. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind job. Otherwise prepare the Markdown and open one pull request only after I approve it. Set posted_by to the GitHub login that opens the pull request. If the company page exists, that login must be in its owners list. One post per pull request. Role: <paste here>
 ```
 
 ### Add my profile
 
 ```text
-Read https://openjob.softprobe.ai/llms.txt and follow it. Save the profile as talents/<github-login>.md and set github to that same login. If the OpenJob MCP server is connected, call create_or_update_post with kind talent. Do not include an email, a phone number, or a WeChat ID. Bio: <paste here>
+Read https://openjob.softprobe.ai/llms.txt and follow it. Save the profile as talents/<github-login>.md and set github to that same login. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind talent. Otherwise show me the exact Markdown and open one pull request only after I approve it. Do not include an email, a phone number, or a WeChat ID. Bio: <paste here>
 ```
 
-With the MCP server connected, those calls are `search_jobs`, `get_job`, `search_talent`, `get_talent`, `validate_post`, `create_or_update_post`, and `close_job`. Read tools use the public index. Write tools need the person's `GITHUB_TOKEN` and open one pull request as that login.
+The remote MCP server at `https://openjob.softprobe.ai/api/mcp` is read-only and exposes `get_dataset`, `list_jobs`, `get_job`, `list_talent`, and `get_talent`. The local Python stdio package retains `search_jobs`, `get_job`, `search_talent`, `get_talent`, `validate_post`, `create_or_update_post`, and `close_job`; its GitHub-backed write tools need the person's `GITHUB_TOKEN` and open one pull request as that login.
 
 ```
 uvx --from git+https://github.com/softprobe/openjob.git openjob-mcp

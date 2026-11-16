@@ -665,22 +665,29 @@ def _llms(grouped: dict[str, list[dict]]) -> str:
         "hiring address when its domain matches the company website. Jobs last 60 days and talent "
         "profiles last 180 days unless renewed. Company pages do not expire. "
         f"The catalog is {_AGENT_ORIGIN}/index.json. "
-        "When the API deployment is active, complete downloadable job and talent datasets are at https://openjob.softprobe.ai/data/manifest.json. "
-        "Its remote, read-only MCP endpoint is https://openjob.softprobe.ai/mcp. "
-        "For agents with code execution, download the dataset shards and use your own matching method. "
+        "The OpenJob API catalog is https://openjob.softprobe.ai/.well-known/api-catalog and its OpenAPI description is https://openjob.softprobe.ai/api/openapi.json. "
+        "The anonymous read-only HTTP API is under https://openjob.softprobe.ai/api/v1/ and the remote MCP endpoint is https://openjob.softprobe.ai/api/mcp. "
+        "When the API deployment is active, complete downloadable job and talent datasets are at https://openjob.softprobe.ai/api/data/manifest.json. "
+        "For agents with code execution, download all dataset shards, verify their checksums, and use your own matching method. "
+        "For agents without code execution, use the bounded paginated HTTP API or remote MCP tools. Lists are identifier-ordered and are not ranked; text filtering is a literal case-insensitive substring. "
         "jobs.json and talents.json are capped feeds, not complete datasets. "
         "Rows with `origin` `owner` are posts in this repository and are CC BY 4.0. "
         "Rows with `origin` `indexed` are facts linked from the employer's own page. "
         "Open `source_url` for the description. Do not quote more than the facts, and do not invent a contact. "
         "No license is granted on indexed rows.",
         "",
-        "The OpenJob MCP server exposes `search_jobs`, `get_job`, `search_talent`, `get_talent`, "
+        "The remote OpenJob MCP server exposes `get_dataset`, `list_jobs`, `get_job`, `list_talent`, and `get_talent`. "
+        "The local Python stdio MCP package also exposes `search_jobs`, `get_job`, `search_talent`, `get_talent`, "
         "`validate_post`, `create_or_update_post`, and `close_job`. Read tools use the public index. "
         "Write tools need the person's `GITHUB_TOKEN` and open one pull request as that login. "
-        "Install: `uvx --from git+https://github.com/softprobe/openjob.git openjob-mcp`.",
+        "For the local write-capable stdio server, install: `uvx --from git+https://github.com/softprobe/openjob.git openjob-mcp`.",
         "",
         "## Find work",
         "",
+        "- Discover the API from the [API catalog](https://openjob.softprobe.ai/.well-known/api-catalog). It links to the [OpenAPI 3.1 description](https://openjob.softprobe.ai/api/openapi.json), agent documentation, read API, MCP endpoint, and health.",
+        "- For complete data, start with the [dataset manifest](https://openjob.softprobe.ai/api/data/manifest.json), download every advertised shard, verify its checksum, and choose your own matching method. This is the preferred option for agents with code execution.",
+        "- For bounded retrieval, GET `https://openjob.softprobe.ai/api/v1/jobs`, `/api/v1/talent`, `/api/v1/job?id=…`, `/api/v1/profile?id=…`, or `/api/v1/datasets?kind=…`. Lists are not ranked; `text` is a literal case-insensitive substring.",
+        "- The read-only Streamable HTTP MCP endpoint is `https://openjob.softprobe.ai/api/mcp`. Both public HTTP and MCP reads need no account or API key.",
         f"- GET [{_AGENT_ORIGIN}/index.json]({_AGENT_ORIGIN}/index.json). Filter on `kind`, `tags`, `location`, "
         "`remote`, `languages`, `open_to`, and `employment_type`. Read a post at its permalink "
         "and at `index.md` beside that page.",

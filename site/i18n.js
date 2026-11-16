@@ -75,16 +75,16 @@ else, including an empty list, stays English.
       agentNew: "Create the file on GitHub",
       agentPrompt: {
         find: function () {
-          return "Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, call search_jobs. Otherwise GET https://openjob.softprobe.ai/index.json and keep posts whose kind is job. Return each match with its permalink and the apply method already on that post. Do not invent an email or a phone number. Resume or bio: <paste here>";
+          return "Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, use list_jobs. Otherwise GET https://openjob.softprobe.ai/api/v1/jobs for a bounded page, or download the complete dataset from https://openjob.softprobe.ai/api/data/manifest.json when code execution is available. If the API is not active, GET https://openjob.softprobe.ai/index.json. Choose your own matching method; OpenJob does not rank results. Return each match with its permalink and the apply method already on that post. Do not invent an email or a phone number. Resume or bio: <paste here>";
         },
         talentSearch: function () {
-          return "Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, call search_talent. Otherwise GET https://openjob.softprobe.ai/index.json and keep posts whose kind is talent or talent-ref. Match profiles to this role and return each match with its permalink and the contact links already on the profile. Do not invent an email or phone number. Role: <paste here>";
+          return "Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, use list_talent. Otherwise GET https://openjob.softprobe.ai/api/v1/talent for a bounded page, or download the complete dataset from https://openjob.softprobe.ai/api/data/manifest.json when code execution is available. Choose your own matching method. Return each profile with its permalink and the contact links already on the profile. Do not invent an email or phone number. Role: <paste here>";
         },
         talent: function (origin) {
-          return "Read " + origin + "llms.txt and follow it. Save the profile as talents/<github-login>.md and set github to that same login. If the OpenJob MCP server is connected, call create_or_update_post with kind talent. Do not include an email, a phone number, or a WeChat ID. Bio: <paste here>";
+          return "Read https://openjob.softprobe.ai/llms.txt and follow it. Save the profile as talents/<github-login>.md and set github to that same login. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind talent. Otherwise show me the exact Markdown and open one pull request only after I approve it. Do not include an email, a phone number, or a WeChat ID. Bio: <paste here>";
         },
         job: function (origin) {
-          return "Read " + origin + "llms.txt and follow it. If the OpenJob MCP server is connected, call create_or_update_post with kind job. Otherwise open one pull request that adds jobs/YYYY/MM/<company>-<role>.md. Set posted_by to the GitHub login that opens the pull request. If the company page exists, that login must be in its owners list. One post per pull request. Role: <paste here>";
+          return "Read https://openjob.softprobe.ai/llms.txt and follow it. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind job. Otherwise prepare the Markdown and open one pull request only after I approve it. Set posted_by to the GitHub login that opens the pull request. If the company page exists, that login must be in its owners list. One post per pull request. Role: <paste here>";
         },
         company: function (origin) {
           return "Read " + origin + "llms.txt and follow it. Turn the details below into an OpenJob company page. Set owners to GitHub logins that include the account opening the pull request, and posted_by to that same login. A new company page is reviewed once. Open one pull request to github.com/softprobe/openjob. Details: <paste here>";
@@ -224,16 +224,16 @@ else, including an empty list, stays English.
       agentNew: "在 GitHub 上新建文件",
       agentPrompt: {
         find: function () {
-          return "阅读 https://openjob.softprobe.ai/llms.txt 并按它执行。如果已连接 OpenJob MCP，调用 search_jobs。否则 GET https://openjob.softprobe.ai/index.json，只保留 kind 为 job 的帖子。每条写出永久链接，以及帖子上已有的申请方式。不要编造邮箱或电话。简历或简介：<粘贴在这里>";
+          return "阅读 https://openjob.softprobe.ai/llms.txt 并按它执行。如果已连接 OpenJob MCP，使用 list_jobs。否则 GET https://openjob.softprobe.ai/api/v1/jobs 获取一页结果；如果支持代码执行，从 https://openjob.softprobe.ai/api/data/manifest.json 下载完整数据并自行匹配。如果 API 未启用，GET https://openjob.softprobe.ai/index.json。OpenJob 不会排序匹配结果。每条写出永久链接，以及帖子上已有的申请方式。不要编造邮箱或电话。简历或简介：<粘贴在这里>";
         },
         talentSearch: function () {
-          return "阅读 https://openjob.softprobe.ai/llms.txt 并按它执行。如果已连接 OpenJob MCP，调用 search_talent。否则 GET https://openjob.softprobe.ai/index.json，只保留 kind 为 talent 或 talent-ref 的帖子。根据这个职位匹配档案，并列出每位候选人的永久链接和档案上已有的联系链接。不要编造邮箱或电话。职位：<粘贴在这里>";
+          return "阅读 https://openjob.softprobe.ai/llms.txt 并按它执行。如果已连接 OpenJob MCP，使用 list_talent。否则 GET https://openjob.softprobe.ai/api/v1/talent 获取一页结果；如果支持代码执行，从 https://openjob.softprobe.ai/api/data/manifest.json 下载完整数据并自行匹配。列出每位候选人的永久链接和档案上已有的联系链接。不要编造邮箱或电话。职位：<粘贴在这里>";
         },
         talent: function (origin) {
-          return "阅读 " + origin + "llms.txt 并按它执行。档案保存为 talents/<github-login>.md，github 填同一个登录名。如果已连接 OpenJob MCP，用 kind talent 调用 create_or_update_post。不要写邮箱、电话或微信号。简介：<粘贴在这里>";
+          return "阅读 https://openjob.softprobe.ai/llms.txt 并按它执行。档案保存为 talents/<github-login>.md，github 填同一个登录名。如果已连接本地 OpenJob stdio MCP，用 kind talent 调用 create_or_update_post。否则先展示完整 Markdown，只有在我批准后才开一个 Pull Request。不要写邮箱、电话或微信号。简介：<粘贴在这里>";
         },
         job: function (origin) {
-          return "阅读 " + origin + "llms.txt 并按它执行。如果已连接 OpenJob MCP，用 kind job 调用 create_or_update_post。否则开一个 Pull Request，只添加 jobs/YYYY/MM/<company>-<role>.md。posted_by 填开这个 Pull Request 的 GitHub 登录名。公司页已存在时，这个登录名必须在 owners 里。一个 Pull Request 只放一篇帖子。职位：<粘贴在这里>";
+          return "阅读 https://openjob.softprobe.ai/llms.txt 并按它执行。如果已连接本地 OpenJob stdio MCP，用 kind job 调用 create_or_update_post。否则先准备 Markdown，只有在我批准后才开一个 Pull Request。posted_by 填开这个 Pull Request 的 GitHub 登录名。公司页已存在时，这个登录名必须在 owners 里。一个 Pull Request 只放一篇帖子。职位：<粘贴在这里>";
         },
         company: function (origin) {
           return "阅读 " + origin + "llms.txt 并按它执行。把下面的内容写成 OpenJob 公司页。owners 要包含开 Pull Request 的登录名，posted_by 也填这个登录名。新公司页会先审核一次。向 github.com/softprobe/openjob 开一个 Pull Request。内容：<粘贴在这里>";

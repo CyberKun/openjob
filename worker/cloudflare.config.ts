@@ -9,10 +9,8 @@ export default defineConfig({
     compatibilityFlags: ['nodejs_compat'],
     env: { DATASETS: bindings.r2({ name: 'openjob-datasets' }) },
     triggers: [
-      triggers.fetch({ pattern: 'openjob.softprobe.ai/mcp*', zone: 'softprobe.ai' }),
-      triggers.fetch({ pattern: 'openjob.softprobe.ai/v1/*', zone: 'softprobe.ai' }),
-      triggers.fetch({ pattern: 'openjob.softprobe.ai/health', zone: 'softprobe.ai' }),
-      triggers.fetch({ pattern: 'openjob.softprobe.ai/data/*', zone: 'softprobe.ai' }),
+      triggers.fetch({ pattern: 'openjob.softprobe.ai/api/*', zone: 'softprobe.ai' }),
+      triggers.fetch({ pattern: 'openjob.softprobe.ai/.well-known/api-catalog', zone: 'softprobe.ai' }),
     ],
     observability: { enabled: true, redactQueryString: true, traces: { enabled: true } },
   },
