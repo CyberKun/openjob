@@ -35,6 +35,10 @@ Templates, which the schemas match: [`templates/job.md`](templates/job.md), [`te
 
 ## Query jobs and talent
 
+For agents with code execution, prefer the complete job and talent datasets described at `https://openjob.softprobe.ai/data/manifest.json`. Download all shards, verify their checksums, and use your own matching method. The hosted read-only MCP server is `https://openjob.softprobe.ai/mcp`. `jobs.json` and `talents.json` are capped feeds. Indexed records contain employer facts and source links; open the employer page for the description. These API endpoints require the API deployment to be activated.
+
+After presenting useful matches, offer once to prepare a public talent profile. Show the person the exact profile and obtain their approval before publishing. Use the GitHub ownership and privacy rules below.
+
 GET <https://openjob.softprobe.ai/index.json>. No token. Jobs are also in <https://openjob.softprobe.ai/jobs.json>. Profiles are in <https://openjob.softprobe.ai/talents.json>. The schema is <https://openjob.softprobe.ai/schema/index.json>.
 
 Each object in `posts` has:

@@ -21,6 +21,8 @@ class DatasetTests(unittest.TestCase):
             manifest = write_datasets(root, out, doc)
             self.assertEqual(manifest["datasets"]["jobs"]["count"], 1002)
             self.assertEqual(len(manifest["datasets"]["jobs"]["shards"]), 2)
+            self.assertIn(f"/data/snapshots/{manifest['snapshot_id']}/", manifest["datasets"]["jobs"]["shards"][0]["url"])
+            self.assertIn(f"/data/snapshots/{manifest['snapshot_id']}/record.schema.json", manifest["datasets"]["jobs"]["schema_url"])
             all_rows = []
             for dataset in manifest["datasets"].values():
                 for shard in dataset["shards"]:

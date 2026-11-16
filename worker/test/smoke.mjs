@@ -11,7 +11,12 @@ try {
   assert.ok(!result.isError, JSON.stringify(result));
   const http = await fetch(new URL('/v1/jobs?limit=1', origin)).then(response => response.json());
   assert.deepEqual(result.structuredContent, http);
+  const job = await client.callTool({name:'get_job',arguments:{id:http.items[0].path}});
+  assert.equal(job.structuredContent.snapshot_id, http.snapshot_id);
+  assert.equal(job.structuredContent.record.path, http.items[0].path);
+  const talent = await client.callTool({name:'list_talent',arguments:{limit:1}});
+  assert.ok(!talent.isError, JSON.stringify(talent));
   const manifest = await client.callTool({name:'get_dataset',arguments:{kind:'jobs'}});
   assert.equal(manifest.structuredContent.snapshot_id, http.snapshot_id);
-  console.log('MCP and HTTP return the same snapshot and records');
+  console.log('MCP tools, details, and HTTP return the same dataset snapshot');
 } finally { await client.close(); }

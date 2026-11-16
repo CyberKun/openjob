@@ -14,7 +14,7 @@ from validator.posts import load_post, schema_dir
 VERSION = "1"
 MAX_ROWS = 1000
 MAX_BYTES = 10 * 1024 * 1024
-ORIGIN = "https://api.openjob.softprobe.ai"
+ORIGIN = "https://openjob.softprobe.ai"
 
 
 def _json(value: object) -> bytes:
@@ -64,9 +64,10 @@ def write_datasets(root: Path, out: Path, document: dict, *, origin: str = ORIGI
             name = f"{group}-{snapshot}-{len(shards):05d}.jsonl"
             (out / name).write_bytes(data)
             (out / (name + ".gz")).write_bytes(compressed)
+            base = f"{origin}/data/snapshots/{snapshot}"
             shards.append({"first_id": rows[0][0], "last_id": rows[-1][0], "count": len(rows),
-                           "url": f"{origin}/data/{name}", "bytes": len(data), "sha256": _sha(data),
-                           "gzip": {"url": f"{origin}/data/{name}.gz", "bytes": len(compressed), "sha256": _sha(compressed)}})
+                           "url": f"{base}/{name}", "bytes": len(data), "sha256": _sha(data),
+                           "gzip": {"url": f"{base}/{name}.gz", "bytes": len(compressed), "sha256": _sha(compressed)}})
             rows, size = [], 0
 
         for record in records:
@@ -78,7 +79,7 @@ def write_datasets(root: Path, out: Path, document: dict, *, origin: str = ORIGI
             rows.append((record["path"], line))
             size += len(line)
         flush()
-        datasets[group] = {"count": len(records), "schema_url": f"{origin}/data/record.schema.json", "shards": shards}
+        datasets[group] = {"count": len(records), "schema_url": f"{origin}/data/snapshots/{snapshot}/record.schema.json", "shards": shards}
     schema = json.loads((schema_dir() / "index.schema.json").read_text(encoding="utf-8"))["$defs"]["post"]
     schema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
     schema["title"] = "OpenJob dataset record"
