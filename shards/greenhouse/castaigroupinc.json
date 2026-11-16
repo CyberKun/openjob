@@ -1,8 +1,8 @@
 {
   "status": "ok",
-  "checked_at": "2026-11-15T13:53:32Z",
+  "checked_at": "2026-11-16T15:39:28Z",
   "failed_at": null,
-  "etag": "W/\"5c900eb082c50cec7baa5c6b7f890c2c\"",
+  "etag": "W/\"b9a955c4a1a354f307f44bdc876380ae\"",
   "jobs": [
     {
       "id": "4011646009",
@@ -15,12 +15,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2025-08-13",
-      "updated": "2026-11-10",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4011646009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4011646009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4134865009",
@@ -33,12 +33,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-02-17",
-      "updated": "2026-11-10",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4134865009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4134865009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4267145009",
@@ -56,7 +56,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4267145009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4267145009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4303526009",
@@ -69,12 +69,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-07-01",
-      "updated": "2026-11-10",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4303526009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4303526009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4322558009",
@@ -87,12 +87,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-07-17",
-      "updated": "2026-11-10",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4322558009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4322558009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4397621009",
@@ -110,7 +110,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4397621009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4397621009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4417521009",
@@ -128,7 +128,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4417521009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4417521009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4418273009",
@@ -146,7 +146,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4418273009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4418273009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4423837009",
@@ -159,12 +159,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-09-29",
-      "updated": "2026-11-12",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4423837009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4423837009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4423859009",
@@ -177,12 +177,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-09-29",
-      "updated": "2026-11-12",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4423859009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4423859009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4425618009",
@@ -200,7 +200,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4425618009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4425618009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4430812009",
@@ -218,7 +218,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4430812009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4430812009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4430819009",
@@ -236,7 +236,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4430819009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4430819009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4430825009",
@@ -254,25 +254,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4430825009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4430825009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
-    },
-    {
-      "id": "4436621009",
-      "title": "AI Solutions Architect",
-      "company": "Cast AI",
-      "location": "Amsterdam, North Holland, Netherlands; EMEA; Lithuania; London, England, United Kingdom; Tel Aviv District, Israel",
-      "remote": "unspecified",
-      "department": "",
-      "employment_type": "",
-      "salary_text": "",
-      "salary_source": "",
-      "posted": "2026-10-08",
-      "updated": "2026-11-10",
-      "deadline": "",
-      "source_url": "https://cast.ai/careers/apply/?gh_jid=4436621009",
-      "apply_url": "https://cast.ai/careers/apply/?gh_jid=4436621009",
-      "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4436798009",
@@ -285,12 +267,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-10-08",
-      "updated": "2026-11-10",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4436798009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4436798009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4451243009",
@@ -308,7 +290,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4451243009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4451243009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4451280009",
@@ -326,7 +308,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4451280009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4451280009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4453576009",
@@ -339,12 +321,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-10-18",
-      "updated": "2026-11-10",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4453576009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4453576009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4455375009",
@@ -362,7 +344,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4455375009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4455375009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4455387009",
@@ -380,7 +362,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4455387009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4455387009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4466998009",
@@ -393,12 +375,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-10-26",
-      "updated": "2026-11-12",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4466998009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4466998009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4467002009",
@@ -411,12 +393,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-10-26",
-      "updated": "2026-11-12",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4467002009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4467002009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4467003009",
@@ -429,12 +411,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-10-26",
-      "updated": "2026-11-10",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4467003009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4467003009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4467006009",
@@ -447,12 +429,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-10-26",
-      "updated": "2026-11-10",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4467006009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4467006009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4467010009",
@@ -470,7 +452,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4467010009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4467010009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4467013009",
@@ -488,7 +470,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4467013009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4467013009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4472206009",
@@ -501,12 +483,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-10-29",
-      "updated": "2026-11-10",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4472206009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4472206009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4478173009",
@@ -519,12 +501,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-11-03",
-      "updated": "2026-11-13",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4478173009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4478173009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4483424009",
@@ -542,7 +524,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4483424009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4483424009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4503148009",
@@ -560,7 +542,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4503148009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4503148009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4504639009",
@@ -573,12 +555,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-11-12",
-      "updated": "2026-11-12",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4504639009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4504639009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4504642009",
@@ -591,12 +573,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-11-12",
-      "updated": "2026-11-13",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4504642009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4504642009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4504643009",
@@ -609,12 +591,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-11-12",
-      "updated": "2026-11-12",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4504643009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4504643009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "4505526009",
@@ -632,7 +614,7 @@
       "source_url": "https://cast.ai/careers/apply/?gh_jid=4505526009",
       "apply_url": "https://cast.ai/careers/apply/?gh_jid=4505526009",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     }
   ],
   "ats": "greenhouse",

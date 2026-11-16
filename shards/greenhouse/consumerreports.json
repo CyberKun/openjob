@@ -1,8 +1,8 @@
 {
   "status": "ok",
-  "checked_at": "2026-11-15T13:53:32Z",
+  "checked_at": "2026-11-16T15:39:28Z",
   "failed_at": null,
-  "etag": "W/\"95a2879af580243bdd95a34b393052f0\"",
+  "etag": "W/\"ad9d954a8c88546942e11099e4c22b47\"",
   "jobs": [
     {
       "id": "5113268007",
@@ -20,7 +20,7 @@
       "source_url": "https://job-boards.greenhouse.io/consumerreports/jobs/5113268007",
       "apply_url": "https://job-boards.greenhouse.io/consumerreports/jobs/5113268007",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "5125371007",
@@ -38,7 +38,7 @@
       "source_url": "https://job-boards.greenhouse.io/consumerreports/jobs/5125371007",
       "apply_url": "https://job-boards.greenhouse.io/consumerreports/jobs/5125371007",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "5217989007",
@@ -56,7 +56,7 @@
       "source_url": "https://job-boards.greenhouse.io/consumerreports/jobs/5217989007",
       "apply_url": "https://job-boards.greenhouse.io/consumerreports/jobs/5217989007",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "5247409007",
@@ -74,11 +74,11 @@
       "source_url": "https://job-boards.greenhouse.io/consumerreports/jobs/5247409007",
       "apply_url": "https://job-boards.greenhouse.io/consumerreports/jobs/5247409007",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "5283513007",
-      "title": "Associate Director, Philanthropic Partnerships",
+      "title": "Associate Director, Philanthropic Partnerships (Principal Gifts)",
       "company": "Consumer Reports",
       "location": "Yonkers, NY",
       "remote": "unspecified",
@@ -87,12 +87,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-11-10",
-      "updated": "2026-11-10",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://job-boards.greenhouse.io/consumerreports/jobs/5283513007",
       "apply_url": "https://job-boards.greenhouse.io/consumerreports/jobs/5283513007",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     }
   ],
   "ats": "greenhouse",

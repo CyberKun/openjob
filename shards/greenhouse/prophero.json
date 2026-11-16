@@ -1,8 +1,8 @@
 {
   "status": "ok",
-  "checked_at": "2026-11-15T13:53:32Z",
+  "checked_at": "2026-11-16T15:39:28Z",
   "failed_at": null,
-  "etag": "W/\"0d7997f99366c832f85757088a312208\"",
+  "etag": "W/\"e30a027c0f912d662bf3f45d9b939860\"",
   "jobs": [
     {
       "id": "5377341008",
@@ -15,12 +15,12 @@
       "salary_text": "",
       "salary_source": "",
       "posted": "2026-08-02",
-      "updated": "2026-09-17",
+      "updated": "2026-11-16",
       "deadline": "",
       "source_url": "https://job-boards.greenhouse.io/prophero/jobs/5377341008",
       "apply_url": "https://job-boards.greenhouse.io/prophero/jobs/5377341008",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "5436235008",
@@ -38,7 +38,7 @@
       "source_url": "https://job-boards.greenhouse.io/prophero/jobs/5436235008",
       "apply_url": "https://job-boards.greenhouse.io/prophero/jobs/5436235008",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "5436251008",
@@ -56,7 +56,7 @@
       "source_url": "https://job-boards.greenhouse.io/prophero/jobs/5436251008",
       "apply_url": "https://job-boards.greenhouse.io/prophero/jobs/5436251008",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "5443498008",
@@ -74,7 +74,7 @@
       "source_url": "https://job-boards.greenhouse.io/prophero/jobs/5443498008",
       "apply_url": "https://job-boards.greenhouse.io/prophero/jobs/5443498008",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "5443598008",
@@ -92,7 +92,7 @@
       "source_url": "https://job-boards.greenhouse.io/prophero/jobs/5443598008",
       "apply_url": "https://job-boards.greenhouse.io/prophero/jobs/5443598008",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "5447455008",
@@ -110,7 +110,7 @@
       "source_url": "https://job-boards.greenhouse.io/prophero/jobs/5447455008",
       "apply_url": "https://job-boards.greenhouse.io/prophero/jobs/5447455008",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "5453695008",
@@ -128,7 +128,7 @@
       "source_url": "https://job-boards.greenhouse.io/prophero/jobs/5453695008",
       "apply_url": "https://job-boards.greenhouse.io/prophero/jobs/5453695008",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     }
   ],
   "ats": "greenhouse",

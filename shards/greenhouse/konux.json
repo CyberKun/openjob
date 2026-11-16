@@ -1,6 +1,6 @@
 {
   "status": "ok",
-  "checked_at": "2026-11-15T13:53:32Z",
+  "checked_at": "2026-11-16T15:39:28Z",
   "failed_at": null,
   "etag": "W/\"d65c0b50afb655793a56592add298ac9\"",
   "jobs": [
@@ -20,7 +20,7 @@
       "source_url": "https://job-boards.greenhouse.io/konux/jobs/4109616003",
       "apply_url": "https://job-boards.greenhouse.io/konux/jobs/4109616003",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "7805858003",
@@ -38,7 +38,7 @@
       "source_url": "https://job-boards.greenhouse.io/konux/jobs/7805858003",
       "apply_url": "https://job-boards.greenhouse.io/konux/jobs/7805858003",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     },
     {
       "id": "8010410003",
@@ -56,7 +56,7 @@
       "source_url": "https://job-boards.greenhouse.io/konux/jobs/8010410003",
       "apply_url": "https://job-boards.greenhouse.io/konux/jobs/8010410003",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     }
   ],
   "ats": "greenhouse",

@@ -1,6 +1,6 @@
 {
   "status": "ok",
-  "checked_at": "2026-11-15T13:53:32Z",
+  "checked_at": "2026-11-16T15:39:28Z",
   "failed_at": null,
   "etag": "W/\"b2503f664b0c83bbcf5c469564d3a66e\"",
   "jobs": [
@@ -20,7 +20,7 @@
       "source_url": "https://job-boards.greenhouse.io/chompscareers/jobs/5250244007",
       "apply_url": "https://job-boards.greenhouse.io/chompscareers/jobs/5250244007",
       "first_seen": "2026-11-15T13:53:32Z",
-      "last_checked": "2026-11-15T13:53:32Z"
+      "last_checked": "2026-11-16T15:39:28Z"
     }
   ],
   "ats": "greenhouse",
