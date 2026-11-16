@@ -7,6 +7,13 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(dirname -- "$script_dir")"
 cf_bin="${OPENJOB_CF_BIN:-$repo_root/worker/node_modules/.bin/cf}"
 
+if [[ ! -d "$datasets_dir" ]]; then
+  echo "Dataset directory not found: $datasets_dir" >&2
+  exit 1
+fi
+# run_cf changes to the worker directory, so keep upload paths rooted at the caller's cwd.
+datasets_dir="$(cd -- "$datasets_dir" && pwd)"
+
 run_cf() {
   (cd -- "$repo_root/worker" && "$cf_bin" "$@")
 }
