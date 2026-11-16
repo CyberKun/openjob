@@ -38,6 +38,7 @@ def main(argv: list[str] | None = None) -> int:
     index.add_argument("--out", type=Path, required=True)
     index.add_argument("--pages", type=Path, help="site directory that receives p/<path>/index.html")
     index.add_argument("--index-data", type=Path, help="directory of the index-data branch")
+    index.add_argument("--datasets-out", type=Path, help="directory for complete public datasets")
     index.add_argument("--today")
 
     expire = sub.add_parser("expire", help="list or delete expired posts")
@@ -118,6 +119,11 @@ def _build_index(args: argparse.Namespace) -> int:
     if args.pages:
         count = write_pages(args.root, args.pages, document)
         print(f"Wrote {count} permalink pages under {args.pages / 'p'}")
+    if args.datasets_out:
+        from validator.datasets import write_datasets
+
+        manifest = write_datasets(args.root, args.datasets_out, document)
+        print(f"Wrote dataset snapshot {manifest['snapshot_id']} to {args.datasets_out}")
     return 0
 
 
