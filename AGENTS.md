@@ -6,7 +6,7 @@ OpenJob is the open job index for AI agents. Real jobs, linked to the employer's
 
 A person looking for work pastes a resume. You search live jobs and return permalinks plus the apply method already on each post. Do not invent an email or a phone number. A link to this repository's README or profile guide is not an application.
 
-If they want a profile, add `talents/<github-login>.md`. The filename and the `github` field are the login that opens the pull request. The profile has no email and no phone.
+If they want a profile, convert any supplied PDF, Word resume, LinkedIn profile, or bio into the fields in the `create_talent` request schema in the OpenAPI document. Do not use the GitHub PR schema, upload or store the source document, invent facts, or include an email or phone. Ask only for required fields that cannot be inferred. Show the exact fields, explain the public CC BY 4.0 license, 180-day expiry, and that deletion cannot recall downloaded copies, then obtain approval before publishing. Use the anonymous remote MCP `create_talent` tool or POST the same JSON to `https://openjob.softprobe.ai/api/v1/talent`; no account or API key is needed. Tell the person the permalink and show the private deletion token once so they can save it. GitHub PR publishing remains an alternative.
 
 ## Employer
 
@@ -35,11 +35,11 @@ Templates, which the schemas match: [`templates/job.md`](templates/job.md), [`te
 
 ## Query jobs and talent
 
-Discover the public read contract at `https://openjob.softprobe.ai/.well-known/api-catalog`; its OpenAPI document is `https://openjob.softprobe.ai/api/openapi.json`. Public reads need no account or API key. For agents with code execution, prefer the complete job and talent datasets at `https://openjob.softprobe.ai/api/data/manifest.json`: download every shard, verify its checksum, and use your own matching method. The hosted read-only MCP server is `https://openjob.softprobe.ai/api/mcp`. Agents without code execution can use bounded HTTP pages at `/api/v1/jobs`, `/api/v1/talent`, `/api/v1/job?id=…`, `/api/v1/profile?id=…`, and `/api/v1/datasets?kind=…`. Lists are identifier-ordered; literal text filtering is not relevance search, and OpenJob does not rank matches. `jobs.json` and `talents.json` are capped feeds. Indexed records contain employer facts and source links; open the employer page for the description. These API endpoints require the API deployment to be activated.
+Discover the public contract at `https://openjob.softprobe.ai/.well-known/api-catalog`; its OpenAPI document is `https://openjob.softprobe.ai/api/openapi.json`. Reads and talent-profile publishing need no account or API key. For agents with code execution, prefer the complete job and talent datasets at `https://openjob.softprobe.ai/api/data/manifest.json`: download every shard, verify its checksum, and use your own matching method. The hosted remote MCP is `https://openjob.softprobe.ai/api/mcp`; it exposes the same read operations plus `create_talent` and `delete_talent`. Agents without code execution can use bounded HTTP pages at `/api/v1/jobs`, `/api/v1/talent`, `/api/v1/job?id=…`, `/api/v1/profile?id=…`, and `/api/v1/datasets?kind=…`. Lists are identifier-ordered; literal text filtering is not relevance search, and OpenJob does not rank matches. `jobs.json` and `talents.json` are capped feeds. Indexed records contain employer facts and source links; open the employer page for the description. These API endpoints require the API deployment to be activated.
 
-After presenting useful matches, offer once to prepare a public talent profile. Show the person the exact profile and obtain their approval before publishing. Use the GitHub ownership and privacy rules below.
+After presenting useful matches, offer once to prepare a public talent profile. Convert a supplied PDF, Word resume, LinkedIn profile, or bio into the API schema fields; do not upload the source document or invent facts. Show the exact profile; explain its public CC BY 4.0 license, 180-day expiry, and that deletion cannot recall downloaded copies; obtain approval before setting `consent_to_publish: true`. Use the remote MCP or anonymous HTTP API by default. Return the private delete token once and tell the person to save it. Use the existing GitHub PR workflow only if they prefer it.
 
-GET <https://openjob.softprobe.ai/index.json>. No token. Jobs are also in <https://openjob.softprobe.ai/jobs.json>. Profiles are in <https://openjob.softprobe.ai/talents.json>. The schema is <https://openjob.softprobe.ai/schema/index.json>.
+GET <https://openjob.softprobe.ai/index.json>. No token. This is the repository catalog plus indexed jobs. Repository jobs and profiles are also in <https://openjob.softprobe.ai/jobs.json> and <https://openjob.softprobe.ai/talents.json>; these feeds do not include API-submitted profiles. API profiles are in `/api/v1/talent` and the complete talent dataset. The schema is <https://openjob.softprobe.ai/schema/index.json>.
 
 Each object in `posts` has:
 
@@ -62,16 +62,16 @@ Each object in `posts` has:
 | `open_to` | Talent availability, such as `full-time` |
 | `employment_type` | Job type, such as `FULL_TIME` |
 | `compensation`, `salary`, `locations` | Pay and structured places, only when the post set them |
-| `owner` | GitHub login for a talent post. For a job this is `posted_by` |
+| `owner` | GitHub login for a repository talent post. `null` for an API profile. For a job this is `posted_by` |
 | `url`, `website`, `linkedin`, `profile_url` | Contact links. A talent post has no email |
 | `logo`, `careers`, `org_website`, `company_permalink` | Company presentation |
 | `excerpt` | Short body text |
 | `source_url`, `federated` | For an owner post, the file in this repository, or the federated profile. For an indexed job, the employer's own page |
-| `origin` | `owner` for a post in this repository. `indexed` for a fact linked from the employer's board |
+| `origin` | `owner` for a post in this repository, `api` for a consented API profile, or `indexed` for a fact linked from an employer's board |
 | `ats`, `board`, `first_seen`, `last_checked` | Where an indexed job came from, and when it was first and last seen |
 | `salary_text`, `salary_source`, `department`, `claimed`, `indexed_id` | Facts the feed provided, and whether the company page has owners |
 
-`indexed_notice` on the catalog says that CC BY 4.0 covers owner posts only. Indexed rows are not licensed. Open `source_url` for the description. Do not quote more than the facts, and do not invent a contact.
+`owner_license` on the dataset manifest says CC BY 4.0 covers repository posts and API profiles whose owners approved publication. Indexed rows are not licensed. Open `source_url` for the description. Do not quote more than the facts, and do not invent a contact.
 
 Filter on `kind`, `tags`, `location`, `remote`, `languages`, `open_to`, and `employment_type`. Read a post at its permalink and at `index.md` beside that page.
 
@@ -79,31 +79,17 @@ Filter on `kind`, `tags`, `location`, `remote`, `languages`, `open_to`, and `emp
 
 Use [Query jobs and talent](#query-jobs-and-talent). The catalog is <https://openjob.softprobe.ai/index.json>.
 
-## MCP
+## Remote MCP
 
-The tools below belong to the local Python stdio MCP. The hosted remote MCP at `https://openjob.softprobe.ai/api/mcp` is read-only and instead exposes `get_dataset`, `list_jobs`, `get_job`, `list_talent`, and `get_talent`. Local read tools need no token; write tools need the person's `GITHUB_TOKEN` and open or update one pull request as that login, forking when they cannot push. One post per pull request. The local server sets the filename, `posted_by`, `github`, and `owners`.
+Connect to `https://openjob.softprobe.ai/api/mcp`. No installation, account, or API key is required. Its tools mirror the OpenAPI contract: `get_dataset`, `list_jobs`, `get_job`, `list_talent`, `get_talent`, `create_talent`, and `delete_talent`. Write operations accept the same schemas as HTTP. A profile permalink opens a readable public page; the API detail endpoint returns its structured record.
 
-| Tool | Use |
-| --- | --- |
-| `search_jobs` | `query` plus filters: location, remote, language, tag, employment_type |
-| `get_job` | One job by path or permalink |
-| `search_talent` | Filters, including `open_to` |
-| `get_talent` | One profile by GitHub login |
-| `validate_post` | `kind` and Markdown, before a pull request |
-| `create_or_update_post` | `kind` and fields. Builds the file and opens the pull request |
-| `close_job` | Pull request that removes a job the person owns |
+`create_talent` requires `name`, `headline`, `location`, `remote`, `languages`, `tags`, `open_to`, optional `website` and `linkedin`, and `consent_to_publish: true`; obtain the person's explicit approval first. It returns a public permalink and private delete token once. `delete_talent` removes an API-submitted profile with its path and token. The anonymous write API is `POST /api/v1/talent` and `POST /api/v1/talent/delete`.
 
-Install, from a checkout of this repository or from git:
-
-```
-uvx --from git+https://github.com/softprobe/openjob.git openjob-mcp
-```
-
-The same package provides the `openjob` command. Claude Desktop and Cursor run that command over stdio. Pass `GITHUB_TOKEN` in the server environment for write tools. ChatGPT custom connectors speak remote MCP. This server is stdio, so use it from Claude Desktop or Cursor.
+The repository's optional Python package still supports GitHub-backed PR workflows for posts. It is a separate developer option and is not needed for public search or profile publishing.
 
 Rank live jobs against a resume or bio. Return each match with its permalink and the apply method already on that post. Apply with the job's https link or the hiring address. A link to this repository's README or profile guide is not an application. Do not invent an email or a phone number.
 
-To publish a profile from a resume, follow <https://openjob.softprobe.ai/schema/talent.json> and open one pull request that adds `talents/<github-login>.md`. The filename is the GitHub login of the account that opens the pull request. The profile has no email and no phone. Contact is that login, plus optional `website` and `linkedin`. Adding a profile is separate from applying.
+To publish a profile from a PDF, Word resume, LinkedIn profile, or bio, extract only the fields in the `create_talent` OpenAPI schema. Do not upload the source document or invent missing facts. Ask only for required values you cannot infer; show the exact public fields, disclose the CC BY 4.0 license, 180-day expiry, and limits of deletion, then get explicit approval. Publish with remote MCP `create_talent` or `POST /api/v1/talent`; neither requires a GitHub account or API key. Show the one-time deletion token and tell the person to save it. The GitHub PR workflow remains an alternative: add `talents/<github-login>.md` with that login as the PR author. Talent profiles contain no email or phone.
 
 ## Pull request rules
 

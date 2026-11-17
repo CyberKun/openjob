@@ -15,13 +15,13 @@ test('dataset routes stream objects from the R2 binding', async () => {
   const bytes = new TextEncoder().encode('{"snapshot_id":"current"}\n');
   const env = {DATASETS: {get: async key => {
     keys.push(key);
-    if (key !== 'manifest.json') return null;
+    if (key !== 'test.json') return null;
     return {body:new ReadableStream({start(controller){controller.enqueue(bytes);controller.close();}}),httpEtag:'etag',writeHttpMetadata(headers){headers.set('content-type','application/json');}};
   }}};
-  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/api/data/manifest.json'), env, {});
+  const response = await worker.fetch(new Request('https://openjob.softprobe.ai/api/data/test.json'), env, {});
   assert.equal(response.status, 200);
   assert.equal(await response.text(), '{"snapshot_id":"current"}\n');
-  assert.deepEqual(keys, ['manifest.json']);
+  assert.deepEqual(keys, ['test.json']);
 });
 
 function r2Object(bytes, key, onCancel = () => {}, holdOpen = false) {

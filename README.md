@@ -14,9 +14,9 @@ The live board.
 
 ## Ask an agent
 
-For complete data, download the dataset manifest at `https://openjob.softprobe.ai/api/data/manifest.json` and its job or talent shards. The public export is stored in Cloudflare R2 and generated from the merged repository catalog; the repo remains the source of truth. Agents can process the records with their own matching code. Discover the contract at [`/.well-known/api-catalog`](https://openjob.softprobe.ai/.well-known/api-catalog) or read [OpenAPI](https://openjob.softprobe.ai/api/openapi.json). Bounded reads are available under `https://openjob.softprobe.ai/api/v1/`; the remote MCP endpoint is `https://openjob.softprobe.ai/api/mcp`. Public reads need no OpenJob account or API key, and lists do not rank results.
+For complete data, download the dataset manifest at `https://openjob.softprobe.ai/api/data/manifest.json` and its job or talent shards. The public export is stored in Cloudflare R2 and includes repository posts plus consented API profiles; indexed employer facts remain linked to their source. Agents can process records with their own matching code. Discover the contract at [`/.well-known/api-catalog`](https://openjob.softprobe.ai/.well-known/api-catalog) or read [OpenAPI](https://openjob.softprobe.ai/api/openapi.json). Bounded reads are available under `https://openjob.softprobe.ai/api/v1/`; the remote MCP endpoint is `https://openjob.softprobe.ai/api/mcp`. Public reads and talent-profile publishing need no OpenJob account or API key, and lists do not rank results.
 
-`jobs.json` and `talents.json` are capped feeds. Indexed jobs contain facts and employer source links; read the employer page for the description. See [dataset access](docs/datasets.md) and the [OpenJob agent skill](skills/openjob/SKILL.md).
+`jobs.json` and `talents.json` are capped feeds from the repository catalog; API-submitted profiles are available through the API, remote MCP, and complete dataset. Indexed jobs contain facts and employer source links; read the employer page for the description. See [dataset access](docs/datasets.md) and the [OpenJob agent skill](skills/openjob/SKILL.md).
 
 Paste one prompt. The agent reads [llms.txt](https://openjob.softprobe.ai/llms.txt) and [AGENTS.md](AGENTS.md).
 
@@ -29,20 +29,16 @@ Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP ser
 ### Post our role
 
 ```text
-Read https://openjob.softprobe.ai/llms.txt and follow it. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind job. Otherwise prepare the Markdown and open one pull request only after I approve it. Set posted_by to the GitHub login that opens the pull request. If the company page exists, that login must be in its owners list. One post per pull request. Role: <paste here>
+Read https://openjob.softprobe.ai/llms.txt and follow it. Prepare one job post and show me the exact Markdown. Open one pull request with my connected GitHub account only after I approve it. If you cannot use a connected GitHub account, give me the Markdown and this new-file link: https://github.com/softprobe/openjob/new/main/jobs. Set posted_by to the login that opens the pull request. If the company page exists, that login must be in its owners list. Role: <paste here>
 ```
 
 ### Add my profile
 
 ```text
-Read https://openjob.softprobe.ai/llms.txt and follow it. Save the profile as talents/<github-login>.md and set github to that same login. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind talent. Otherwise show me the exact Markdown and open one pull request only after I approve it. Do not include an email, a phone number, or a WeChat ID. Bio: <paste here>
+Read https://openjob.softprobe.ai/llms.txt and follow it. If I provide a PDF or Word resume, LinkedIn profile, or bio, extract only the fields in the create_talent request schema in the OpenAPI document at https://openjob.softprobe.ai/api/openapi.json. Do not use the GitHub PR schema, upload or store the source document, or invent missing facts. Ask only for required API fields you cannot infer. Show me the exact profile fields; explain that the profile is public under CC BY 4.0, expires after 180 days, and deletion cannot recall copies already downloaded; then ask for my approval before publishing. After I approve, if the OpenJob remote MCP is connected, call create_talent; otherwise POST the same JSON to https://openjob.softprobe.ai/api/v1/talent with consent_to_publish=true. No GitHub account or API key is needed. Tell me the profile permalink and show the private delete token once so I can save it. Do not include email or phone. If I prefer GitHub, use the existing PR workflow instead. Resume or profile: <paste or attach here>
 ```
 
-The remote MCP server at `https://openjob.softprobe.ai/api/mcp` is read-only and exposes `get_dataset`, `list_jobs`, `get_job`, `list_talent`, and `get_talent`. The local Python stdio package retains `search_jobs`, `get_job`, `search_talent`, `get_talent`, `validate_post`, `create_or_update_post`, and `close_job`; its GitHub-backed write tools need the person's `GITHUB_TOKEN` and open one pull request as that login.
-
-```
-uvx --from git+https://github.com/softprobe/openjob.git openjob-mcp
-```
+There are three profile-publishing options: the existing GitHub pull request workflow; anonymous HTTP via `POST /api/v1/talent`; or the same `create_talent` operation on the hosted MCP. The HTTP and MCP paths use the same OpenAPI schema. They require the person's explicit approval and store only structured profile fields, not the source resume file. They return a private deletion token once. GitHub is required only for the pull request option.
 
 ## Who can edit what
 
@@ -53,7 +49,7 @@ uvx --from git+https://github.com/softprobe/openjob.git openjob-mcp
 | That company's jobs | Those same owners |
 | A new company page | Reviewed once, then the owners |
 
-You need a free GitHub account. You can only edit your own posts.
+The GitHub pull request workflow requires a free GitHub account. API and remote MCP profile publishing do not.
 
 One new post per pull request. To change a post that is already on the board, edit that file. Do not add a second file for the same role or the same person.
 
@@ -75,7 +71,7 @@ Field rules: [Post a job](CONTRIBUTING.md#post-a-job).
 
 For a candidate.
 
-1. Copy [`templates/talent.md`](templates/talent.md) to `talents/<your-github-name>.md`. Example: `talents/ada.md`. The filename and `github` are your GitHub login.
+1. Copy [`templates/talent.md`](templates/talent.md) to `talents/<your-github-name>.md`. Example: `talents/ada.md`. The filename and `github` are your GitHub login. This is the GitHub pull request option; you can publish without GitHub through the API or remote MCP.
 2. Say what you do and what you are open to. A personal site or `https://www.linkedin.com/in/…` is fine. Do not add a phone number, an email address, or a WeChat ID.
 3. Open a pull request that changes only that file. [Add file in `talents/`](https://github.com/softprobe/openjob/new/main/talents). It takes the same path as a job: `validate`, then auto-merge when the pull request is content-only.
 
@@ -91,14 +87,14 @@ Phone numbers are not allowed. A talent post cannot contain an email. A job may 
 
 A job lasts 60 days and a talent profile lasts 180 days, from `posted` or from `renewed`. A company page stays until the owner deletes it. Git history is the archive.
 
-Code, schemas, workflows, and the site are [MIT](LICENSE). Posts and templates are [CC BY 4.0](LICENSE-CONTENT.md).
+Code, schemas, workflows, and the site are [MIT](LICENSE). Repository posts, templates, and profiles explicitly submitted through the API are [CC BY 4.0](LICENSE-CONTENT.md).
 
 ## How it works
 
-1. You add a Markdown file under `jobs/`, `talents/`, or `companies/`.
-2. `validate` checks the schema, the path, the size, and the privacy rules.
-3. A pull request that only changes those posts is squash-merged by `automerge`. A change to code, the site, or the docs waits for `@softprobe/openjob-maintainers`.
-4. `pages` builds `index.json`, the permalink pages, the sitemap, and the feeds, then deploys the static site to GitHub Pages. Search runs in the browser.
+1. Daily employer-feed facts are checked into `index-data`. GitHub pull requests add jobs, profiles, and company pages. The anonymous API and remote MCP add talent profiles directly to R2 after explicit consent.
+2. `validate` checks GitHub posts for schema, path, size, ownership, and privacy rules. The API validates against the shared OpenAPI schema and supports deletion with a private token.
+3. A pull request that only changes posts is squash-merged by `automerge`. A change to code, the site, or docs waits for `@softprobe/openjob-maintainers`.
+4. `pages` builds `index.json`, repository permalink pages, sitemaps, feeds, and complete R2 dataset shards. The Worker adds live API profiles to dataset and API reads and serves their public profile pages.
 
 The permalink of a post is `https://openjob.softprobe.ai/p/` plus the file path without `.md`. Example: `https://openjob.softprobe.ai/p/jobs/2026/11/softprobe-software-engineer/`.
 

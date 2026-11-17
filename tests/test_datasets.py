@@ -19,6 +19,10 @@ class DatasetTests(unittest.TestCase):
             doc = {"generated": "2026-11-15T00:00:00Z", "source": "https://github.com/softprobe/openjob", "posts": posts}
             out = root / "out"
             manifest = write_datasets(root, out, doc)
+            dataset_schema = json.loads((out / "record.schema.json").read_text(encoding="utf-8"))
+            self.assertIn("null", dataset_schema["properties"]["owner"]["type"])
+            self.assertIn("api", dataset_schema["properties"]["origin"]["enum"])
+            self.assertIn("explicit consent", manifest["owner_license"])
             self.assertEqual(manifest["datasets"]["jobs"]["count"], 1002)
             self.assertEqual(len(manifest["datasets"]["jobs"]["shards"]), 2)
             self.assertIn(f"/data/snapshots/{manifest['snapshot_id']}/", manifest["datasets"]["jobs"]["shards"][0]["url"])

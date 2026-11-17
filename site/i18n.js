@@ -61,7 +61,7 @@ else, including an empty list, stays English.
       hiring: "I am hiring",
       audienceLabel: "Choose an audience",
       findTalents: "Search Talents",
-      githubAccount: "You need a free GitHub account. You can only edit your own posts.",
+      githubAccount: "No account is needed to publish a profile through the API or remote MCP. GitHub is only needed for the optional PR workflow.",
       useAgent: "Use your AI agent",
       agentFind: "Find jobs",
       agentJob: "Job",
@@ -69,7 +69,7 @@ else, including an empty list, stays English.
       agentCompany: "Company",
       agentCopy: "Copy prompt",
       agentCopied: "Copied",
-      agentFallback: "If your agent cannot open a pull request, ask it to print the Markdown file. Paste that file with the GitHub new-file link for the folder.",
+      agentFallback: "Profile publishing also works through the anonymous API or remote MCP. GitHub is only needed for the pull request option.",
       agentFindFallback: "This prompt does not open a pull request. The agent reads the public index and returns matching permalinks.",
       agentIndex: "Read the live index",
       agentNew: "Create the file on GitHub",
@@ -80,11 +80,11 @@ else, including an empty list, stays English.
         talentSearch: function () {
           return "Read https://openjob.softprobe.ai/llms.txt and follow it. If the OpenJob MCP server is connected, use list_talent. Otherwise GET https://openjob.softprobe.ai/api/v1/talent for a bounded page, or download the complete dataset from https://openjob.softprobe.ai/api/data/manifest.json when code execution is available. Choose your own matching method. Return each profile with its permalink and the contact links already on the profile. Do not invent an email or phone number. Role: <paste here>";
         },
-        talent: function (origin) {
-          return "Read https://openjob.softprobe.ai/llms.txt and follow it. Save the profile as talents/<github-login>.md and set github to that same login. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind talent. Otherwise show me the exact Markdown and open one pull request only after I approve it. Do not include an email, a phone number, or a WeChat ID. Bio: <paste here>";
+        talent: function () {
+          return "Read https://openjob.softprobe.ai/llms.txt and follow it. If I provide a PDF or Word resume, LinkedIn profile, or bio, extract only the fields in the create_talent request schema in the OpenAPI document at https://openjob.softprobe.ai/api/openapi.json. Do not use the GitHub PR schema, upload or store the source document, or invent missing facts. Ask only for required API fields you cannot infer. Show me the exact profile fields; explain that the profile is public under CC BY 4.0, expires after 180 days, and deletion cannot recall copies already downloaded; then ask for my approval before publishing. After I approve, if the OpenJob remote MCP is connected, call create_talent; otherwise POST the same JSON to https://openjob.softprobe.ai/api/v1/talent with consent_to_publish=true. No GitHub account or API key is needed. Tell me the profile permalink and show the private delete token once so I can save it. Do not include email or phone. If I prefer GitHub, use the existing PR workflow instead. Resume or profile: <paste or attach here>";
         },
         job: function (origin) {
-          return "Read https://openjob.softprobe.ai/llms.txt and follow it. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind job. Otherwise prepare the Markdown and open one pull request only after I approve it. Set posted_by to the GitHub login that opens the pull request. If the company page exists, that login must be in its owners list. One post per pull request. Role: <paste here>";
+          return "Read https://openjob.softprobe.ai/llms.txt and follow it. Prepare one job post and show me the exact Markdown. Open one pull request with my connected GitHub account only after I approve it. If you cannot use a connected GitHub account, give me the Markdown and this new-file link: https://github.com/softprobe/openjob/new/main/jobs. Set posted_by to the login that opens the pull request. If the company page exists, that login must be in its owners list. Role: <paste here>";
         },
         company: function (origin) {
           return "Read " + origin + "llms.txt and follow it. Turn the details below into an OpenJob company page. Set owners to GitHub logins that include the account opening the pull request, and posted_by to that same login. A new company page is reviewed once. Open one pull request to github.com/softprobe/openjob. Details: <paste here>";
@@ -145,12 +145,13 @@ else, including an empty list, stays English.
       aboutWhat: "What is OpenJob?",
       aboutWhatBody: "The open job index for AI agents. Real jobs, linked to the employer's own page, checked daily. Free for everyone.",
       aboutPost: "How do I post a job or a talent profile?",
+      aboutPostBody: "Jobs and company pages use the GitHub pull request workflow. Talent profiles can also be published through the anonymous API or remote MCP without an account.",
       aboutApply: "How do I apply?",
       aboutApplyBody: "The job page shows the method. That is an email on the company domain, an https link, or both. A link to this board's profile guide is not an application.",
       aboutProfile: "How do I add a profile?",
-      aboutProfileBody: "A talent profile is talents/&lt;your-github-name&gt;.md. It is not how you apply to a job. Do not put a phone number or a personal email in that profile. You need a free GitHub account. You can only edit your own posts.",
+      aboutProfileBody: "You can publish a profile through the anonymous API or remote MCP without an account, or use the GitHub pull request workflow. Profiles are public, contain no email or phone, and expire after 180 days. A profile is not a job application.",
       aboutFeeds: "How do I hear about new posts?",
-      aboutFeedsBody: "New jobs are in jobs.xml. New profiles are in talents.xml. Every post is in feed.xml. The catalog is index.json.",
+      aboutFeedsBody: "Repository posts are in jobs.xml, talents.xml, and feed.xml. API-submitted profiles are available through the complete talent dataset and the OpenJob API. The GitHub catalog is index.json.",
       aboutPrivacy: "Why are phone numbers and personal emails rejected?",
       aboutPrivacyBody: "The board is public. Phone numbers are never accepted. Talent posts cannot contain an email. A job may list one hiring address, and only when that domain matches the company website.",
       aboutDuration: "How long does a post stay up?",
@@ -210,7 +211,7 @@ else, including an empty list, stays English.
       hiring: "我在招聘",
       audienceLabel: "选择你的身份",
       findTalents: "搜索人才",
-      githubAccount: "你需要一个免费的 GitHub 账号。你只能改自己的帖子。",
+      githubAccount: "通过 API 或远程 MCP 发布档案不需要账号。只有选择 Pull Request 工作流时才需要 GitHub。",
       useAgent: "使用你的 AI 助手",
       agentFind: "找职位",
       agentJob: "职位",
@@ -229,11 +230,11 @@ else, including an empty list, stays English.
         talentSearch: function () {
           return "阅读 https://openjob.softprobe.ai/llms.txt 并按它执行。如果已连接 OpenJob MCP，使用 list_talent。否则 GET https://openjob.softprobe.ai/api/v1/talent 获取一页结果；如果支持代码执行，从 https://openjob.softprobe.ai/api/data/manifest.json 下载完整数据并自行匹配。列出每位候选人的永久链接和档案上已有的联系链接。不要编造邮箱或电话。职位：<粘贴在这里>";
         },
-        talent: function (origin) {
-          return "阅读 https://openjob.softprobe.ai/llms.txt 并按它执行。档案保存为 talents/<github-login>.md，github 填同一个登录名。如果已连接本地 OpenJob stdio MCP，用 kind talent 调用 create_or_update_post。否则先展示完整 Markdown，只有在我批准后才开一个 Pull Request。不要写邮箱、电话或微信号。简介：<粘贴在这里>";
+        talent: function () {
+          return "阅读 https://openjob.softprobe.ai/llms.txt 并按它执行。如果我提供 PDF 或 Word 简历、LinkedIn 资料或个人简介，只提取 https://openjob.softprobe.ai/api/openapi.json 中 create_talent 请求 schema 所需的字段。不要使用 GitHub PR schema，不要上传或保存原始文件，也不要编造缺失事实。只询问无法推断的 API 必填字段。先展示完整字段；说明档案会按 CC BY 4.0 公开、180 天后过期，而且删除无法收回已下载的副本；然后征求我的发布批准。批准后，如果已连接 OpenJob 远程 MCP，就调用 create_talent；否则将相同 JSON（consent_to_publish=true）POST 到 https://openjob.softprobe.ai/api/v1/talent。无需 GitHub 账号或 API 密钥。告诉我档案链接，并只展示一次私密删除令牌供我保存。不要包含邮箱或电话。如果我偏好 GitHub，可改用现有 Pull Request 工作流。简历或资料：<粘贴或上传>";
         },
         job: function (origin) {
-          return "阅读 https://openjob.softprobe.ai/llms.txt 并按它执行。如果已连接本地 OpenJob stdio MCP，用 kind job 调用 create_or_update_post。否则先准备 Markdown，只有在我批准后才开一个 Pull Request。posted_by 填开这个 Pull Request 的 GitHub 登录名。公司页已存在时，这个登录名必须在 owners 里。一个 Pull Request 只放一篇帖子。职位：<粘贴在这里>";
+          return "阅读 https://openjob.softprobe.ai/llms.txt 并按它执行。准备一份岗位 Markdown 并先向我展示完整内容。只有在我批准后，才使用我已连接的 GitHub 账户开一个 Pull Request。如果没有可用的 GitHub 连接，请提供 Markdown 和这个新建岗位链接：https://github.com/softprobe/openjob/new/main/jobs。posted_by 填开 Pull Request 的登录名。公司页已存在时，该登录名必须在 owners 里。职位：<粘贴在这里>";
         },
         company: function (origin) {
           return "阅读 " + origin + "llms.txt 并按它执行。把下面的内容写成 OpenJob 公司页。owners 要包含开 Pull Request 的登录名，posted_by 也填这个登录名。新公司页会先审核一次。向 github.com/softprobe/openjob 开一个 Pull Request。内容：<粘贴在这里>";
@@ -294,13 +295,13 @@ else, including an empty list, stays English.
       aboutWhat: "OpenJob 是什么？",
       aboutWhatBody: "面向 AI 代理的开放职位索引。真实职位，链到雇主自己的页面，每天检查。对所有人免费。",
       aboutPost: "如何发布职位或人才档案？",
-      aboutPostBody: "把模板复制到 <code>jobs/</code>、<code>talents/</code> 或 <code>companies/</code>，然后开 Pull Request。只改帖子的请求会在检查通过后自动合并。",
+      aboutPostBody: "职位和公司页通过 Pull Request 发布。人才档案也可通过匿名 API 或远程 MCP 发布，无需账号；也可以继续使用 GitHub Pull Request。",
       aboutApply: "如何申请？",
       aboutApplyBody: "申请方式写在职位页上，是公司域名上的邮箱、一个 https 链接，或两者都有。指向本看板档案说明的链接不是申请方式。",
       aboutProfile: "如何添加档案？",
-      aboutProfileBody: "人才档案是 <code>talents/&lt;你的-github-用户名&gt;.md</code>。这不是申请某个职位的方式。不要写电话或个人邮箱。你需要一个免费的 GitHub 账号。你只能改自己的帖子。步骤见 <a href=\"https://github.com/softprobe/openjob#add-your-profile\">添加档案</a>。",
+      aboutProfileBody: "你可以通过匿名 API 或远程 MCP 发布人才档案，无需账号，也可以继续使用 GitHub Pull Request。档案会公开发布，不能包含邮箱或电话，并在 180 天后过期。人才档案不是职位申请。",
       aboutFeeds: "如何知道有新帖子？",
-      aboutFeedsBody: "新职位：<a href=\"../jobs.xml\">jobs.xml</a>（另有 <a href=\"../jobs.atom\">jobs.atom</a> 和 <a href=\"../jobs.json\">jobs.json</a>）。新档案：<a href=\"../talents.xml\">talents.xml</a>（另有 <a href=\"../talents.atom\">talents.atom</a> 和 <a href=\"../talents.json\">talents.json</a>）。全部帖子在 <a href=\"../feed.xml\">feed.xml</a>。目录是 <a href=\"../index.json\">index.json</a>。",
+      aboutFeedsBody: "GitHub 仓库中的职位和档案可通过 <a href=\"../jobs.xml\">jobs.xml</a>、<a href=\"../talents.xml\">talents.xml</a> 和 <a href=\"../feed.xml\">feed.xml</a> 阅读。API 发布的档案可通过 OpenJob API 和完整人才数据集获取。GitHub 目录是 <a href=\"../index.json\">index.json</a>。",
       aboutPrivacy: "为什么拒绝电话和个人邮箱？",
       aboutPrivacyBody: "看板是公开的。电话一律不允许。人才帖不能写邮箱。职位最多写一个招聘邮箱，而且域名必须和公司网站一致。",
       aboutDuration: "帖子保留多久？",

@@ -6,7 +6,7 @@ const client = new Client({name:'openjob-smoke', version:'1.0.0'});
 await client.connect(new StreamableHTTPClientTransport(new URL('/api/mcp', origin)));
 try {
   const tools = await client.listTools();
-  assert.deepEqual(new Set(tools.tools.map(tool => tool.name)), new Set(['get_dataset','list_jobs','get_job','list_talent','get_talent']));
+  assert.deepEqual(new Set(tools.tools.map(tool => tool.name)), new Set(['get_dataset','list_jobs','get_job','list_talent','get_talent','create_talent','delete_talent']));
   const result = await client.callTool({name:'list_jobs',arguments:{limit:1}});
   assert.ok(!result.isError, JSON.stringify(result));
   const http = await fetch(new URL('/api/v1/jobs?limit=1', origin)).then(response => response.json());

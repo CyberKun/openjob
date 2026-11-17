@@ -1,6 +1,6 @@
-# OpenJob local MCP server
+# Optional local MCP package
 
-Agents use this server to search the public board and to open one pull request on behalf of a person.
+This package is an optional developer tool for GitHub-backed pull requests. People do not need to install it to search OpenJob or publish a talent profile.
 
 Read tools use <https://openjob.softprobe.ai/index.json>. They do not need a token.
 
@@ -63,9 +63,11 @@ Add the same `mcpServers` entry to `~/.cursor/mcp.json`.
 
 ## Hosted remote MCP
 
-For anonymous reads without local installation, connect to `https://openjob.softprobe.ai/api/mcp`. It exposes `get_dataset`, `list_jobs`, `get_job`, `list_talent`, and `get_talent`, and is read-only. The host may still ask the person to approve the connection.
+For no-install search and talent-profile publishing, connect to `https://openjob.softprobe.ai/api/mcp`. It exposes `get_dataset`, `list_jobs`, `get_job`, `list_talent`, `get_talent`, `create_talent`, and `delete_talent`. The write tools use the same schemas as the HTTP API at `https://openjob.softprobe.ai/api/v1/` and need no account or API key. `create_talent` requires explicit approval of the exact public profile fields, the CC BY 4.0 license, 180-day expiry, and the fact that deletion cannot recall copies already downloaded; it returns a private delete token once.
 
-This Python package speaks stdio and provides the GitHub-backed write tools. Claude Desktop and Cursor run it locally; it does not start an HTTP server.
+The remote MCP stores structured profile fields only. It does not accept resume file uploads. For PDF, Word, or LinkedIn source material, agents should extract the API schema fields, ask only for material missing required values, show the exact fields, and get approval before creating a profile. The profile is public under CC BY 4.0 and expires after 180 days.
+
+The Python package below speaks stdio and provides separate GitHub-backed pull request tools. Use it only when developing or choosing the repository workflow; it is not needed for profile publishing.
 
 ## Command line
 

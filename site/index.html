@@ -44,7 +44,7 @@
         <p class="kicker" id="kicker" data-i18n="kicker">OpenJob</p>
         <div class="title-row">
           <h1 data-i18n="hero">The open job index for AI agents</h1>
-          <span class="stamp" aria-hidden="true">PR</span>
+          <span class="stamp" aria-hidden="true">API</span>
         </div>
         <p class="deck" id="deck" data-i18n="deck">Real jobs, linked to the employer's own page, checked daily. Free for everyone.</p>
       </div>
@@ -68,7 +68,7 @@
           </article>
           <article class="prompt">
             <h2 data-i18n="addMine">Let the right job find me</h2>
-            <pre id="prompt-talent" data-prompt="talent">Read https://openjob.softprobe.ai/llms.txt and follow it. Save the profile as talents/&lt;github-login&gt;.md and set github to that same login. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind talent. Otherwise show me the exact Markdown and open one pull request only after I approve it. Do not include an email, a phone number, or a WeChat ID. Bio: &lt;paste here&gt;</pre>
+            <pre id="prompt-talent" data-prompt="talent">Read https://openjob.softprobe.ai/llms.txt and follow it. If I provide a PDF or Word resume, LinkedIn profile, or bio, extract only the fields in the create_talent request schema in the OpenAPI document at https://openjob.softprobe.ai/api/openapi.json. Do not use the GitHub PR schema, upload or store the source document, or invent missing facts. Ask only for required API fields you cannot infer. Show me the exact profile fields; explain that the profile is public under CC BY 4.0, expires after 180 days, and deletion cannot recall copies already downloaded; then ask for my approval before publishing. After I approve, if the OpenJob remote MCP is connected, call create_talent; otherwise POST the same JSON to https://openjob.softprobe.ai/api/v1/talent with consent_to_publish=true. No GitHub account or API key is needed. Tell me the profile permalink and show the private delete token once so I can save it. Do not include email or phone. If I prefer GitHub, use the existing PR workflow instead. Resume or profile: &lt;paste or attach here&gt;</pre>
             <p class="agent-actions"><button type="button" class="text-button" data-copy-prompt="prompt-talent" data-i18n="agentCopy">Copy prompt</button></p>
           </article>
         </div>
@@ -77,7 +77,7 @@
         <div class="prompt-grid">
           <article class="prompt">
             <h2 data-i18n="postRole">Post our role</h2>
-            <pre id="prompt-job" data-prompt="job">Read https://openjob.softprobe.ai/llms.txt and follow it. If the local OpenJob stdio MCP is connected, call create_or_update_post with kind job. Otherwise prepare the Markdown and open one pull request only after I approve it. Set posted_by to the GitHub login that opens the pull request. If the company page exists, that login must be in its owners list. One post per pull request. Role: &lt;paste here&gt;</pre>
+            <pre id="prompt-job" data-prompt="job">Read https://openjob.softprobe.ai/llms.txt and follow it. Prepare one job post and show me the exact Markdown. Open one pull request with my connected GitHub account only after I approve it. If you cannot use a connected GitHub account, give me the Markdown and this new-file link: https://github.com/softprobe/openjob/new/main/jobs. Set posted_by to the login that opens the pull request. If the company page exists, that login must be in its owners list. Role: &lt;paste here&gt;</pre>
             <p class="agent-actions"><button type="button" class="text-button" data-copy-prompt="prompt-job" data-i18n="agentCopy">Copy prompt</button></p>
           </article>
           <article class="prompt">
@@ -88,7 +88,7 @@
         </div>
       </div>
       <p class="by-hand"><a data-i18n="byHand" href="https://github.com/softprobe/openjob#do-it-by-hand">Do it by hand</a></p>
-      <p class="sub" data-i18n="githubAccount">You need a free GitHub account. You can only edit your own posts.</p>
+      <p class="sub" data-i18n="githubAccount">No account is needed to publish a profile through the API or remote MCP. GitHub is only needed for the optional PR workflow.</p>
     </section>
 
     <form id="filters" role="search">

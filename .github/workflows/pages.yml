@@ -32,6 +32,24 @@ jobs:
           GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
           BING_SITE_VERIFICATION: ${{ vars.BING_SITE_VERIFICATION }}
         run: python -m validator build-index --root . --out site/index.json --pages site --index-data index-data --datasets-out build/datasets
+      - name: Version cached translation scripts
+        env:
+          SITE_ASSET_VERSION: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+
+          version = os.environ["SITE_ASSET_VERSION"]
+          updated = 0
+          for html_path in Path("site").rglob("*.html"):
+              content = html_path.read_text(encoding="utf-8")
+              versioned = content.replace('i18n.js"', f'i18n.js?v={version}"')
+              if versioned != content:
+                  html_path.write_text(versioned, encoding="utf-8")
+                  updated += 1
+          print(f"Versioned i18n.js in {updated} HTML files")
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: openjob-datasets
