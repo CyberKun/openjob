@@ -15,7 +15,7 @@ function setup() {
     talent:{count:1,schema_url:'schema',shards:[{first_id:'talents/ada.md',last_id:'talents/ada.md',url:'https://openjob.softprobe.ai/data/talent.jsonl'}]},
   }};
   const assets = {'jobs.jsonl.gz': gzipSync(rows.map(r=>JSON.stringify(r)).join('\n')+'\n'), 'talent.jsonl.gz': gzipSync(JSON.stringify(profile)+'\n')};
-  return {m, env:{DATASETS:{get: async key => {
+  return {m, env:{DATASETS:{list: async () => ({objects:[],truncated:false}), get: async key => {
     const value = key === 'manifest.json' ? JSON.stringify(m) : assets[key.split('/').at(-1)];
     if (value === undefined) return null;
     const body = typeof value === 'string' ? new TextEncoder().encode(value) : value;

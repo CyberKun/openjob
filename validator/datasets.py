@@ -91,7 +91,8 @@ def write_datasets(root: Path, out: Path, document: dict, *, origin: str = ORIGI
     (out / "record.schema.json").write_bytes(_json(schema) + b"\n")
     manifest = {"schema_version": VERSION, "snapshot_id": snapshot, "generated": document["generated"],
                 "source": document["source"], "indexed_notice": document.get("indexed_notice", INDEXED_NOTICE),
-                "owner_license": "CC BY 4.0", "datasets": datasets}
+                "owner_license": "CC BY 4.0 applies to repository posts and API-submitted profiles published with explicit consent. Indexed employer rows are not licensed.",
+                "datasets": datasets}
     (out / "manifest.json").write_bytes(_json(manifest) + b"\n")
     for path in out.iterdir():
         if re.fullmatch(r"(?:jobs|talent)-[0-9a-f]{64}-[0-9]{5}\.jsonl(?:\.gz)?", path.name) and snapshot not in path.name:
